@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream"
+    android:padding="24dp">
+
+    <!-- Logo Placeholder -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logoCard"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="@color/ucf_gold"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/titleText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Logo"
+            android:textColor="@color/text_main"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="UCF Marketplace"
+        android:textColor="@color/text_main"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/subtitleText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoCard" />
+
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Buy and sell with students you can actually verify."
+        android:textAlignment="center"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreateAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        app:layout_constraintWidth_percent="0.7" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="48dp"
+        android:text="Create account"
+        android:textColor="@color/text_main"
+        android:textSize="16sp"
+        app:backgroundTint="@color/ucf_gold"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:text="Log in"
+        android:textColor="@color/text_main"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:strokeColor="#DDDDDD"
+        app:layout_constraintBottom_toTopOf="@+id/infoBanner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount" />
+
+    <LinearLayout
+        android:id="@+id/infoBanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_banner_bg"
+        android:backgroundTint="@color/banner_green_bg"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_security_shield"
+            app:tint="@color/banner_green_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="A @knights.ucf.edu address is required. No public listings, no outside buyers."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

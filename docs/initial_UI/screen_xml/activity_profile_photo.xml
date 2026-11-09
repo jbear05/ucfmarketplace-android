@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="24dp">
+        <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/km_camera" android:contentDescription="Add profile photo" app:tint="@color/km_gold" android:background="@drawable/km_gold_circle" android:padding="22dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add a profile photo" android:textSize="20sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" android:layout_marginTop="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Buyers and sellers trust real faces. You can skip for now — we’ll only ask this once." android:textSize="13sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="8dp" android:lineSpacingExtra="3dp" />
+        <com.google.android.material.button.MaterialButton android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/choose" android:text="Choose Photo" android:textSize="14sp" android:textAllCaps="false" android:textColor="@color/km_black" app:backgroundTint="@color/km_gold" app:cornerRadius="8dp" android:layout_marginTop="24dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Skip for now" android:textSize="13sp" android:textColor="@color/km_gold" android:id="@+id/skip" android:gravity="center" android:padding="16dp" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+</LinearLayout>

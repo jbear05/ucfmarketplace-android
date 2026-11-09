@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream">
+
+    <!-- Header -->
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_main" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Filters"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnClose"
+        app:layout_constraintStart_toEndOf="@+id/btnClose"
+        app:layout_constraintTop_toTopOf="@+id/btnClose" />
+
+    <TextView
+        android:id="@+id/textReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Reset"
+        android:textColor="#D4A000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnClose" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btnClose">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp">
+
+            <!-- Price -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRICE"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="$ 10"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_main"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="$ 60"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Campus -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="CAMPUS"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/campus_toggle_bg"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="All"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/campus_toggle_active_bg"
+                    android:gravity="center"
+                    android:text="Main"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Rosen"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Downtown"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Condition -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="CONDITION"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/condition_filter_active_bg"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:text="New"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/condition_filter_active_bg"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:text="Like new"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/condition_filter_bg"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:text="Good"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/condition_filter_bg"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:text="Fair"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Sort By -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="SORT BY"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <!-- Sort Option 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/radio_checked" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="Price: low to high"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Sort Option 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/radio_unchecked" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price per unit"
+                        android:textColor="@color/text_main"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not available for all items"
+                        android:textColor="#BDBDBD"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Sort Option 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/radio_unchecked" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="Closest to me"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Sort Option 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/radio_unchecked" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="Newest first"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="#EEEEEE" />
+
+            <!-- AI Generated Toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_main"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Listings tagged by the seller"
+                        android:textColor="#BDBDBD"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Custom Switch visually simulating the mockup -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="24dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/switch_track_on" />
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/switch_thumb" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Button Container -->
+    <LinearLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnShowResults"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Show 18 results"
+            android:textColor="@color/text_main"
+            android:textSize="16sp"
+            app:backgroundTint="@color/ucf_gold"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

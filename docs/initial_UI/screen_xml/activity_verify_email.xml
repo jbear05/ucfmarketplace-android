@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Verify email"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+    <!-- Icon & Titles -->
+    <FrameLayout
+        android:id="@+id/emailIconContainer"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/circle_bg_light_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_email"
+            app:tint="@color/banner_green_text"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/titleVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Check your Knights inbox"
+        android:textColor="@color/text_main"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailIconContainer" />
+
+    <TextView
+        android:id="@+id/subtitleVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="We sent a 6-digit code to\nemail@ucf.edu"
+        android:textAlignment="center"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleVerify" />
+
+    <!-- OTP Input Row -->
+    <LinearLayout
+        android:id="@+id/otpContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleVerify">
+
+        <!-- Repeat this EditText 6 times for each digit -->
+        <EditText
+            android:layout_width="45dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/otp_box_bg"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text="4"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Add remaining 5 EditTexts similarly -->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/resendText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Didn't get it? Resend in 0:42"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otpContainer" />
+
+    <!-- Security Banner -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_banner_bg"
+        android:backgroundTint="@color/banner_green_bg"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resendText">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_verified_badge"
+            app:tint="@color/banner_green_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Verified sellers get a green Knight badge. Your email address is never shown to other students."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Bottom Button -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnVerify"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVerify"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:text="Verify &amp; continue"
+        android:textColor="@color/text_main"
+        android:textSize="16sp"
+        app:backgroundTint="@color/ucf_gold"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

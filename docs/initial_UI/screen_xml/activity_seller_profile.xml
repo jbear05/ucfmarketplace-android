@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="4dp" android:background="@color/km_topbar">
+        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_arrow_back" android:contentDescription="Back to screen picker" app:tint="@color/km_text" android:id="@+id/back" android:padding="12dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gaspar Dantas" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:text="G" android:textSize="18sp" android:textColor="@color/km_gold" android:gravity="center" android:textStyle="bold" android:background="@drawable/km_gold_circle" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="12dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Gaspar Dantas" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No ratings yet" android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="5dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="20dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:background="@drawable/km_card" android:paddingVertical="14dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="0" android:textSize="14sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sales" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <Space android:layout_width="8dp" android:layout_height="1dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:background="@drawable/km_card" android:paddingVertical="14dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="14sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Rating" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                    <Space android:layout_width="8dp" android:layout_height="1dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:background="@drawable/km_card" android:paddingVertical="14dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sep 2026" android:textSize="14sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Member since" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Active Listings" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" android:layout_marginTop="24dp" />
+                <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" app:cardCornerRadius="12dp" app:cardBackgroundColor="@color/km_topbar" app:strokeColor="@color/km_divider" app:strokeWidth="1dp" app:cardElevation="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <FrameLayout android:layout_width="match_parent" android:layout_height="180dp">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="180dp">
+                                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:background="@drawable/km_photo_placeholder">
+                                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/km_camera" android:contentDescription="Item photo placeholder" app:tint="@color/km_muted" />
+                                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="PHOTO" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:letterSpacing="0.18" android:layout_marginTop="10dp" />
+                                </LinearLayout>
+                            </FrameLayout>
+                            <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_favorite_border" android:contentDescription="Save listing" app:tint="@color/km_text" android:id="@+id/save_grinder" android:padding="8dp" android:background="@drawable/km_circle" android:layout_gravity="top|end" android:layout_margin="10dp" />
+                        </FrameLayout>
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="$10" android:textSize="18sp" android:textColor="@color/km_gold" android:textStyle="bold" android:layout_weight="1" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Available" android:textSize="11sp" android:textColor="@color/km_green" android:background="@drawable/km_available" android:paddingHorizontal="9dp" android:paddingVertical="4dp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Electric Salt grinder" android:textSize="14sp" android:textColor="@color/km_text" android:textStyle="bold" android:layout_marginTop="6dp" />
+                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Main Campus" android:textSize="11sp" android:textColor="@color/km_muted" android:layout_marginTop="5dp" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Other" android:textSize="10sp" android:textColor="@color/km_muted" android:background="@drawable/km_input" android:padding="5dp" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New" android:textSize="10sp" android:textColor="@color/km_muted" android:background="@drawable/km_input" android:padding="5dp" android:layout_marginStart="6dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

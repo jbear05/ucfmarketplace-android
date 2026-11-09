@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="4dp" android:background="@color/km_topbar">
+        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_arrow_back" android:contentDescription="Back to screen picker" app:tint="@color/km_text" android:id="@+id/back" android:padding="12dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Settings" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Profile" android:textSize="12sp" android:textColor="@color/km_muted" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Full Name" android:textSize="11sp" android:textColor="@color/km_muted" android:layout_marginTop="10dp" />
+                <EditText android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/full_name" android:layout_marginTop="12dp" android:background="@drawable/km_input" android:padding="16dp" android:hint="Full Name" android:text="Natasha Romanoff" android:textColor="@color/km_text" android:textColorHint="@color/km_muted" android:textSize="14sp" android:gravity="center_vertical" android:inputType="textCapSentences" />
+                <EditText android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/class_year" android:layout_marginTop="12dp" android:background="@drawable/km_input" android:padding="16dp" android:hint="Class Year" android:textColor="@color/km_text" android:textColorHint="@color/km_muted" android:textSize="14sp" android:gravity="center_vertical" android:inputType="textCapSentences" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Display" android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="28dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginEnd="12dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Dark mode" android:textSize="14sp" android:textColor="@color/km_text" />
+                    </LinearLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="56dp" android:layout_height="48dp" android:id="@+id/dark_mode" android:checked="true" android:contentDescription="Dark mode" app:useMaterialThemeColors="false" app:thumbTint="@color/km_switch_thumb" app:trackTint="@color/km_switch_track" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Notifications" android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="28dp" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="KnightMarket has no push notifications yet — this controls email only." android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="8dp" android:lineSpacingExtra="3dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginEnd="12dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Email me about listing alerts" android:textSize="14sp" android:textColor="@color/km_text" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Price drops on favorites, and new matches for saved searches" android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="5dp" android:lineSpacingExtra="3dp" />
+                    </LinearLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:layout_width="56dp" android:layout_height="48dp" android:id="@+id/email_alerts" android:checked="true" android:contentDescription="Email me about listing alerts" app:useMaterialThemeColors="false" app:thumbTint="@color/km_switch_thumb" app:trackTint="@color/km_switch_track" />
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/save_settings" android:text="Save" android:textSize="14sp" android:textAllCaps="false" android:textColor="@color/km_black" app:backgroundTint="@color/km_gold" app:cornerRadius="8dp" android:layout_marginTop="28dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

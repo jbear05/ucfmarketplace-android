@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream">
+
+    <!-- Search Header -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_main" />
+
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/search_bar_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="@+id/btnBack">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_search"
+            app:tint="@color/text_secondary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="calc 2 textbook"
+            android:textColor="@color/text_main"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_close"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Results count & Filters -->
+    <TextView
+        android:id="@+id/textResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:text="18 results"
+        android:textColor="@color/text_main"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchContainer" />
+
+    <LinearLayout
+        android:id="@+id/btnFilters"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/filter_btn_active_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textResults"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textResults">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_tune"
+            app:tint="@color/text_main" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp"
+            android:text="Filters"
+            android:textColor="@color/text_main"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/badge_circle"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Scrollable Results List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textResults">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Item 1 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp">
+
+                <FrameLayout
+                    android:id="@+id/img1"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/product_image_placeholder_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:letterSpacing="0.2"
+                        android:text="PHOTO"
+                        android:textColor="#C7BFA4"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/price1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="$35"
+                    android:textColor="@color/text_main"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img1"
+                    app:layout_constraintTop_toTopOf="@+id/img1" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_favorite_border"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img1"
+                    app:tint="#BDBDBD" />
+
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Calculus: Early Transcendentals, 9e"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/img1"
+                    app:layout_constraintTop_toBottomOf="@+id/price1" />
+
+                <TextView
+                    android:id="@+id/tag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/condition_tag_bg"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Fair"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img1"
+                    app:layout_constraintTop_toBottomOf="@+id/title1" />
+
+                <ImageView
+                    android:id="@+id/star1"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag1"
+                    app:layout_constraintStart_toEndOf="@+id/tag1"
+                    app:layout_constraintTop_toTopOf="@+id/tag1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="4.6"
+                    android:textColor="@color/text_main"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag1"
+                    app:layout_constraintStart_toEndOf="@+id/star1"
+                    app:layout_constraintTop_toTopOf="@+id/tag1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Student Union · 0.3 mi"
+                    android:textColor="#BDBDBD"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@+id/img1"
+                    app:layout_constraintTop_toBottomOf="@+id/tag1" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#EEEEEE"
+                    app:layout_constraintTop_toBottomOf="@+id/img1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Item 2 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp">
+
+                <FrameLayout
+                    android:id="@+id/img2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/product_image_placeholder_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:letterSpacing="0.2"
+                        android:text="PHOTO"
+                        android:textColor="#C7BFA4"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/price2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="$45"
+                    android:textColor="@color/text_main"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img2"
+                    app:layout_constraintTop_toTopOf="@+id/img2" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_favorite_filled"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img2" />
+
+                <TextView
+                    android:id="@+id/title2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Calc II — Stewart 9th ed. + solutions"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/img2"
+                    app:layout_constraintTop_toBottomOf="@+id/price2" />
+
+                <TextView
+                    android:id="@+id/tag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/condition_tag_green_bg"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Verified"
+                    android:drawableStart="@drawable/ic_verified_badge"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/banner_green_text"
+                    android:textColor="@color/banner_green_text"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img2"
+                    app:layout_constraintTop_toBottomOf="@+id/title2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Hitt Library · 0.2 mi"
+                    android:textColor="#BDBDBD"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@+id/img2"
+                    app:layout_constraintTop_toBottomOf="@+id/tag2" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#EEEEEE"
+                    app:layout_constraintTop_toBottomOf="@+id/img2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Item 3 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp">
+
+                <FrameLayout
+                    android:id="@+id/img3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/product_image_placeholder_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:letterSpacing="0.2"
+                        android:text="PHOTO"
+                        android:textColor="#C7BFA4"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/price3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="$52"
+                    android:textColor="@color/text_main"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img3"
+                    app:layout_constraintTop_toTopOf="@+id/img3" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_favorite_border"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img3"
+                    app:tint="#BDBDBD" />
+
+                <TextView
+                    android:id="@+id/title3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Stewart Calculus bundle, barely used"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/img3"
+                    app:layout_constraintTop_toBottomOf="@+id/price3" />
+
+                <TextView
+                    android:id="@+id/tag3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/condition_tag_green_bg"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Like new"
+                    android:textColor="@color/banner_green_text"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img3"
+                    app:layout_constraintTop_toBottomOf="@+id/title3" />
+
+                <ImageView
+                    android:id="@+id/star3"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag3"
+                    app:layout_constraintStart_toEndOf="@+id/tag3"
+                    app:layout_constraintTop_toTopOf="@+id/tag3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="5.0"
+                    android:textColor="@color/text_main"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag3"
+                    app:layout_constraintStart_toEndOf="@+id/star3"
+                    app:layout_constraintTop_toTopOf="@+id/tag3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Garage C · 0.5 mi"
+                    android:textColor="#BDBDBD"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@+id/img3"
+                    app:layout_constraintTop_toBottomOf="@+id/tag3" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#EEEEEE"
+                    app:layout_constraintTop_toBottomOf="@+id/img3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Item 4 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp">
+
+                <FrameLayout
+                    android:id="@+id/img4"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/product_image_placeholder_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:letterSpacing="0.2"
+                        android:text="PHOTO"
+                        android:textColor="#C7BFA4"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/price4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="$58"
+                    android:textColor="@color/text_main"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img4"
+                    app:layout_constraintTop_toTopOf="@+id/img4" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_favorite_border"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img4"
+                    app:tint="#BDBDBD" />
+
+                <TextView
+                    android:id="@+id/title4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Calc II textbook, no markings"
+                    android:textColor="@color/text_main"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/img4"
+                    app:layout_constraintTop_toBottomOf="@+id/price4" />
+
+                <TextView
+                    android:id="@+id/tag4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/condition_tag_green_bg"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Like new"
+                    android:textColor="@color/banner_green_text"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img4"
+                    app:layout_constraintTop_toBottomOf="@+id/title4" />
+
+                <ImageView
+                    android:id="@+id/star4"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag4"
+                    app:layout_constraintStart_toEndOf="@+id/tag4"
+                    app:layout_constraintTop_toTopOf="@+id/tag4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="4.9"
+                    android:textColor="@color/text_main"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tag4"
+                    app:layout_constraintStart_toEndOf="@+id/star4"
+                    app:layout_constraintTop_toTopOf="@+id/tag4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Rec Center · 0.6 mi"
+                    android:textColor="#BDBDBD"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toEndOf="@+id/img4"
+                    app:layout_constraintTop_toBottomOf="@+id/tag4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

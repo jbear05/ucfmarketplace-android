@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="64dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/km_topbar">
+        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_arrow_back" android:contentDescription="Back" app:tint="@color/km_text" android:id="@+id/back" android:padding="12dp" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Clark Kent" android:textSize="15sp" android:textColor="@color/km_text" android:textStyle="bold" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="$18 · Black Ops Duffel Bag" android:textSize="11sp" android:textColor="@color/km_muted" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <TextView android:layout_width="48dp" android:layout_height="48dp" android:text="⋮" android:textSize="24sp" android:textColor="@color/km_text" android:id="@+id/chat_menu" android:gravity="center" android:contentDescription="Chat options" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="16dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Today 7:21 PM" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="16dp" />
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" android:background="@drawable/km_card" android:layout_marginTop="16dp">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Best deal?" android:textSize="14sp" android:textColor="@color/km_text" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="7:21 PM" android:textSize="10sp" android:textColor="@color/km_muted" android:layout_marginTop="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp" android:background="@color/km_topbar">
+        <EditText android:layout_width="0dp" android:layout_height="48dp" android:id="@+id/message_input" android:layout_weight="1" android:background="@drawable/km_input" android:paddingHorizontal="14dp" android:hint="Message..." android:textColor="@color/km_text" android:textColorHint="@color/km_muted" android:textSize="14sp" android:inputType="textCapSentences" />
+        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/km_send" android:contentDescription="Send message" app:tint="@color/km_black" android:id="@+id/send_message" android:padding="12dp" android:background="@drawable/km_marker" android:layout_marginStart="10dp" />
+    </LinearLayout>
+</LinearLayout>
