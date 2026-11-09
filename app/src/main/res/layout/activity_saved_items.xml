@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:text="Saved" android:textSize="18sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@color/km_topbar" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Items" android:textSize="13sp" android:textColor="@color/km_gold" android:gravity="center" android:paddingVertical="14dp" />
+            <View android:layout_width="36dp" android:layout_height="2dp" android:layout_gravity="center_horizontal" android:background="@color/km_gold" />
+        </LinearLayout>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Searches" android:textSize="13sp" android:textColor="@color/km_muted" android:layout_weight="1" android:gravity="center" android:paddingVertical="14dp" />
+    </LinearLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:padding="24dp">
+        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_favorite_border" android:contentDescription="No saved items" app:tint="@color/km_muted" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No saved listings yet" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" android:layout_marginTop="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tap the heart on any listing to save it" android:textSize="12sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="8dp" />
+    </LinearLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/km_topbar">
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_home">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_search" android:contentDescription="Home" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Home" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_saved">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_favorite_border" android:contentDescription="Saved" app:tint="@color/km_gold" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Saved" android:textSize="10sp" android:textColor="@color/km_gold" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_sell">
+            <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_add" android:contentDescription="Sell" app:tint="@color/km_black" android:padding="7dp" android:background="@drawable/km_marker" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sell" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_chats">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_chat" android:contentDescription="Chats" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Chats" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_you">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_person" android:contentDescription="You" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="You" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

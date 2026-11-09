@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:text="Profile" android:textSize="18sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@color/km_topbar" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp" android:background="@color/km_topbar">
+                <FrameLayout android:layout_width="64dp" android:layout_height="64dp">
+                    <ImageView android:layout_width="64dp" android:layout_height="64dp" android:src="@drawable/km_cap" android:contentDescription="Verified student" app:tint="#47C8C2" android:padding="17dp" android:background="@drawable/km_teal_circle" />
+                    <TextView android:layout_width="20dp" android:layout_height="20dp" android:text="✓" android:textSize="11sp" android:textColor="@color/km_black" android:layout_gravity="bottom|end" android:gravity="center" android:background="@drawable/km_marker" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="16dp">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Natasha Romanoff" android:textSize="18sp" android:textColor="@color/km_text" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="natasharomanoff@ucf.edu" android:textSize="12sp" android:textColor="@color/km_muted" android:layout_marginTop="6dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="✓ Verified Student" android:textSize="12sp" android:textColor="@color/km_gold" android:layout_marginTop="6dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No ratings yet" android:textSize="11sp" android:textColor="@color/km_muted" android:layout_marginTop="6dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Member since Sep 2026" android:textSize="11sp" android:textColor="@color/km_muted" android:layout_marginTop="6dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <Space android:layout_width="match_parent" android:layout_height="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="20dp" android:background="@color/km_topbar">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_home" android:contentDescription="My Listings" app:tint="@color/km_text" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="My Listings" android:textSize="14sp" android:textColor="@color/km_text" android:id="@+id/profile_listings" android:layout_weight="1" android:layout_marginStart="18dp" />
+                <TextView android:layout_width="20dp" android:layout_height="wrap_content" android:text="›" android:textSize="24sp" android:textColor="@color/km_muted" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="20dp" android:background="@color/km_topbar">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/km_settings" android:contentDescription="Settings" app:tint="@color/km_text" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Settings" android:textSize="14sp" android:textColor="@color/km_text" android:id="@+id/profile_settings" android:layout_weight="1" android:layout_marginStart="18dp" />
+                <TextView android:layout_width="20dp" android:layout_height="wrap_content" android:text="›" android:textSize="24sp" android:textColor="@color/km_muted" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="20dp" android:background="@color/km_topbar">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/km_support" android:contentDescription="Contact Admin" app:tint="@color/km_text" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Contact Admin" android:textSize="14sp" android:textColor="@color/km_text" android:id="@+id/contact_admin" android:layout_weight="1" android:layout_marginStart="18dp" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="20dp" android:background="@color/km_topbar">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/km_logout" android:contentDescription="Log Out" app:tint="#E56363" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Log Out" android:textSize="14sp" android:textColor="#E56363" android:id="@+id/logout" android:layout_weight="1" android:layout_marginStart="18dp" />
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="KnightMarket v1.0.0" android:textSize="11sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="32dp" />
+        </LinearLayout>
+    </ScrollView>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/km_topbar">
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_home">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_search" android:contentDescription="Home" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Home" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_saved">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_favorite_border" android:contentDescription="Saved" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Saved" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_sell">
+            <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/ic_add" android:contentDescription="Sell" app:tint="@color/km_black" android:padding="7dp" android:background="@drawable/km_marker" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sell" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_chats">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_chat" android:contentDescription="Chats" app:tint="@color/km_muted" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Chats" android:textSize="10sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="64dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:id="@+id/nav_you">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_person" android:contentDescription="You" app:tint="@color/km_gold" android:padding="0dp" android:background="@android:color/transparent" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="You" android:textSize="10sp" android:textColor="@color/km_gold" android:gravity="center" android:layout_marginTop="3dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

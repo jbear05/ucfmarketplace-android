@@ -1,0 +1,6 @@
+<resources>
+<color name="km_black">#0B0D0C</color><color name="km_topbar">#17171B</color><color name="km_surface">#1C1C20</color><color name="km_divider">#2A2A2E</color><color name="km_gold">#D4AF37</color><color name="km_text">#F4F3EC</color><color name="km_muted">#9A9A9A</color><color name="km_green">#22C55E</color>
+<style name="KmText"><item name="android:textColor">@color/km_text</item><item name="android:textSize">14sp</item></style>
+<style name="KmButton" parent="Widget.Material3.Button"><item name="backgroundTint">@color/km_gold</item><item name="android:textColor">@color/km_black</item><item name="cornerRadius">8dp</item></style>
+<style name="KmChip" parent="Widget.Material3.Chip.Filter"><item name="chipBackgroundColor">@color/km_chip_bg</item><item name="android:textColor">@color/km_chip_text</item><item name="checkedIconVisible">false</item><item name="chipStrokeWidth">0dp</item><item name="chipCornerRadius">6dp</item><item name="android:textSize">12sp</item><item name="chipMinHeight">36dp</item><item name="ensureMinTouchTargetSize">false</item></style>
+</resources>
