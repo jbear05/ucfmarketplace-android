@@ -565,7 +565,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Home -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/nav_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -587,7 +587,7 @@
         </LinearLayout>
 
         <!-- Saved -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/nav_saved"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -608,7 +608,7 @@
         </LinearLayout>
 
         <!-- Sell FAB -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/nav_sell"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -636,7 +636,7 @@
         </LinearLayout>
 
         <!-- Chats -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/nav_chats"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -657,7 +657,7 @@
         </LinearLayout>
 
         <!-- You -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/nav_you"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
