@@ -29,14 +29,16 @@ public class MainActivity extends AppCompatActivity {
                 {R.id.nav_chats, R.layout.activity_messages},
                 {R.id.nav_you, R.layout.activity_user_profile},
         };
-        // 01 Landing (tap the logo for the screen picker)
+        // 01 Landing
         ROUTES.put(R.layout.activity_landing, new int[][]{
                 {R.id.btnCreateAccount, R.layout.activity_create_account},
                 {R.id.btnLogin, R.layout.activity_login},
-                {R.id.logoCard, R.layout.fragment_screen_picker},
         });
         // 02A Create account -> 02B Verify email -> 03 Profile photo -> 07 Home
-        ROUTES.put(R.layout.activity_create_account, new int[][]{{R.id.btnContinue, R.layout.activity_verify_email}});
+        ROUTES.put(R.layout.activity_create_account, new int[][]{
+                {R.id.btnContinue, R.layout.activity_verify_email},
+                {R.id.checkboxRules, R.layout.activity_community_rules},
+        });
         ROUTES.put(R.layout.activity_verify_email, new int[][]{{R.id.btnVerify, R.layout.activity_profile_photo}});
         ROUTES.put(R.layout.activity_profile_photo, new int[][]{
                 {R.id.choose, R.layout.activity_shopping},
@@ -86,30 +88,6 @@ public class MainActivity extends AppCompatActivity {
         ROUTES.put(R.layout.activity_my_listings, concat(bottomNav, new int[][]{{R.id.new_owned_listing, R.layout.activity_create_listing}}));
         ROUTES.put(R.layout.activity_map, bottomNav);
         ROUTES.put(R.layout.activity_saved_items, bottomNav);
-        // Screen picker: every screen in checkpoint order
-        ROUTES.put(R.layout.fragment_screen_picker, new int[][]{
-                {R.id.open_landing, R.layout.activity_landing},
-                {R.id.open_create_account, R.layout.activity_create_account},
-                {R.id.open_verify, R.layout.activity_verify_email},
-                {R.id.open_photo, R.layout.activity_profile_photo},
-                {R.id.open_login, R.layout.activity_login},
-                {R.id.open_reset, R.layout.activity_forgot_password},
-                {R.id.open_rules, R.layout.activity_community_rules},
-                {R.id.open_home, R.layout.activity_shopping},
-                {R.id.open_search, R.layout.activity_search_results},
-                {R.id.open_filters, R.layout.activity_filters},
-                {R.id.open_map, R.layout.activity_map},
-                {R.id.open_detail, R.layout.activity_listing_detail},
-                {R.id.open_seller, R.layout.activity_seller_profile},
-                {R.id.open_create, R.layout.activity_create_listing},
-                {R.id.open_messages, R.layout.activity_messages},
-                {R.id.open_chat, R.layout.activity_chat_thread},
-                {R.id.open_meetup, R.layout.activity_arrange_meetup},
-                {R.id.open_saved, R.layout.activity_saved_items},
-                {R.id.open_user_profile, R.layout.activity_user_profile},
-                {R.id.open_settings, R.layout.activity_settings},
-                {R.id.open_my_listings, R.layout.activity_my_listings},
-        });
     }
 
     private static int[][] concat(int[][] a, int[][] b) {
