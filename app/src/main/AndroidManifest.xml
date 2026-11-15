@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
         <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".LandingActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">

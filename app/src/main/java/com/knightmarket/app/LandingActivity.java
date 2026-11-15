@@ -1,5 +1,6 @@
 package com.knightmarket.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -18,13 +19,13 @@ public class LandingActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.btnLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Log In Clicked - Coming Soon", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         });
 
         binding.btnCreateAccount.setOnClickListener(v -> {
-            Toast.makeText(this, "Create Account Clicked - Coming Soon", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to CreateAccountActivity
+            Intent intent = new Intent(this, CreateAccountActivity.class);
+            startActivity(intent);
         });
     }
 }
