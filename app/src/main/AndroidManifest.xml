@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
         <activity
+            android:name=".VerifyEmailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".CreateAccountActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

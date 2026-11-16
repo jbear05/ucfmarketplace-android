@@ -1,5 +1,6 @@
 package com.knightmarket.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -20,8 +21,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnContinue.setOnClickListener(v -> {
-            Toast.makeText(this, "Verify Email Screen Coming Soon!", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to VerifyEmailActivity
+            Intent intent = new Intent(this, VerifyEmailActivity.class);
+            startActivity(intent);
         });
     }
 }
