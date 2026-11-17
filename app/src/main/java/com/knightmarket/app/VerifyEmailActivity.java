@@ -1,5 +1,6 @@
 package com.knightmarket.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,8 +26,8 @@ public class VerifyEmailActivity extends AppCompatActivity {
         setupOtpInputs();
 
         binding.btnVerify.setOnClickListener(v -> {
-            Toast.makeText(this, "Shopping Screen Coming Soon!", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to ShoppingActivity
+            Intent intent = new Intent(this, ShoppingActivity.class);
+            startActivity(intent);
         });
     }
 

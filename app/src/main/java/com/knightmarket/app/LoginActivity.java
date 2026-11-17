@@ -21,8 +21,8 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Shopping Screen Coming Soon!", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to ShoppingActivity
+            Intent intent = new Intent(this, ShoppingActivity.class);
+            startActivity(intent);
         });
 
         binding.btnCreateAccount.setOnClickListener(v -> {
