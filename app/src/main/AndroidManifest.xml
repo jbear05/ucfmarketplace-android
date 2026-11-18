@@ -12,7 +12,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
         <activity
-            android:name=".MainActivity"
+            android:name=".ShoppingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".VerifyEmailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".LandingActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
