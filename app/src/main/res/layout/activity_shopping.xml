@@ -566,6 +566,9 @@
 
         <!-- Home -->
         <LinearLayout
+            android:id="@+id/nav_home"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -588,6 +591,9 @@
 
         <!-- Saved -->
         <LinearLayout
+            android:id="@+id/nav_saved"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -609,6 +615,9 @@
 
         <!-- Sell FAB -->
         <LinearLayout
+            android:id="@+id/nav_sell"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -637,6 +646,9 @@
 
         <!-- Chats -->
         <LinearLayout
+            android:id="@+id/nav_chats"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -658,6 +670,9 @@
 
         <!-- You -->
         <LinearLayout
+            android:id="@+id/nav_you"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

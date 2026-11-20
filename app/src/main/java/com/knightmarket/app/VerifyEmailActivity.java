@@ -26,7 +26,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
         setupOtpInputs();
 
         binding.btnVerify.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ShoppingActivity.class);
+            Intent intent = new Intent(this, ProfilePhotoActivity.class);
             startActivity(intent);
         });
     }
