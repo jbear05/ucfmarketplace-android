@@ -78,14 +78,56 @@ public final class Api {
 
     /** Newest first; category and search may be null. */
     public static void listings(String category, String search, String token, Callback callback) {
-        StringBuilder path = new StringBuilder("/listings?limit=50");
-        if (category != null) {
-            path.append("&category=").append(encode(category));
-        }
-        if (search != null) {
-            path.append("&search=").append(encode(search));
-        }
-        request("GET", path.toString(), null, token, callback);
+        ListingFilters filters = new ListingFilters();
+        filters.category = category;
+        filters.search = search;
+        listings(filters, token, callback);
+    }
+
+    /** GET /listings with any of category, search, condition, price range and sort. */
+    public static void listings(ListingFilters filters, String token, Callback callback) {
+        request("GET", "/listings?limit=50" + filters.toQuery(), null, token, callback);
+    }
+
+    /** One listing with its owner; data is the listing itself. */
+    public static void listing(String id, String token, Callback callback) {
+        request("GET", "/listings/" + encode(id), null, token, callback);
+    }
+
+    /** All of the logged-in user's listings, including pending and off market. */
+    public static void myListings(String token, Callback callback) {
+        request("GET", "/listings/mine", null, token, callback);
+    }
+
+    /** status: active, pending or offMarket */
+    public static void setListingStatus(String id, String status, String token, Callback callback) {
+        JSONObject body = new JSONObject();
+        put(body, "status", status);
+        request("PATCH", "/listings/" + encode(id) + "/status", body, token, callback);
+    }
+
+    public static void deleteListing(String id, String token, Callback callback) {
+        request("DELETE", "/listings/" + encode(id), null, token, callback);
+    }
+
+    /** Saves or unsaves a listing; data.isFavorited is the new state. */
+    public static void toggleFavorite(String id, String token, Callback callback) {
+        request("POST", "/listings/" + encode(id) + "/favorite", null, token, callback);
+    }
+
+    // ── Profile ──────────────────────────────────────────────────────────────
+
+    public static void updateName(String name, String token, Callback callback) {
+        JSONObject body = new JSONObject();
+        put(body, "name", name);
+        request("PUT", "/auth/me", body, token, callback);
+    }
+
+    /** Opens (or continues) a chat with the admin, starting with this message. */
+    public static void contactAdmin(String message, String token, Callback callback) {
+        JSONObject body = new JSONObject();
+        put(body, "message", message);
+        request("POST", "/threads/contact-admin", body, token, callback);
     }
 
     // ── Plumbing ─────────────────────────────────────────────────────────────
@@ -159,7 +201,7 @@ public final class Api {
         }
     }
 
-    private static String encode(String value) {
+    static String encode(String value) {
         try {
             return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
         } catch (IOException e) {

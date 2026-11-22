@@ -15,6 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
         <activity
+            android:name=".ListingDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FiltersActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SavedItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyListingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfilePhotoActivity"
             android:exported="false" />
         <activity

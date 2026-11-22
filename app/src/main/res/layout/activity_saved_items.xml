@@ -1,18 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/main" android:tag="reference_full_width" android:background="@color/km_black">
-    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:text="Saved" android:textSize="18sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@color/km_topbar" />
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:id="@+id/savedTitle" android:text="Saved" android:textSize="18sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@color/km_topbar" />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1">
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Items" android:textSize="13sp" android:textColor="@color/km_gold" android:gravity="center" android:paddingVertical="14dp" />
             <View android:layout_width="36dp" android:layout_height="2dp" android:layout_gravity="center_horizontal" android:background="@color/km_gold" />
         </LinearLayout>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="Searches" android:textSize="13sp" android:textColor="@color/km_muted" android:layout_weight="1" android:gravity="center" android:paddingVertical="14dp" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:id="@+id/savedSearchesTab" android:text="Searches" android:textSize="13sp" android:textColor="@color/km_muted" android:layout_weight="1" android:gravity="center" android:paddingVertical="14dp" />
     </LinearLayout>
     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:padding="24dp">
+    <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:id="@+id/savedGrid" android:paddingHorizontal="16dp" android:paddingVertical="8dp" android:clipToPadding="false" android:visibility="gone" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:orientation="vertical" android:layout_weight="1" android:gravity="center" android:padding="24dp" android:id="@+id/savedEmpty">
         <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_favorite_border" android:contentDescription="No saved items" app:tint="@color/km_muted" />
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No saved listings yet" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" android:layout_marginTop="20dp" />
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tap the heart on any listing to save it" android:textSize="12sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="8dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/savedEmptyTitle" android:text="No saved listings yet" android:textSize="16sp" android:textColor="@color/km_text" android:textStyle="bold" android:gravity="center" android:layout_marginTop="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/savedEmptyHint" android:text="Tap the heart on any listing to save it" android:textSize="12sp" android:textColor="@color/km_muted" android:gravity="center" android:layout_marginTop="8dp" />
     </LinearLayout>
     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/km_divider" />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/km_topbar">

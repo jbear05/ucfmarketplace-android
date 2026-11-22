@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -24,8 +25,17 @@ public class ShoppingActivity extends AppCompatActivity {
     private ActivityShoppingBinding binding;
     private ListingAdapter adapter;
 
-    private String category; // null = All
-    private String search;   // null = no search
+    private final ListingFilters filters = new ListingFilters(); // category, search, condition, price, sort
+
+    private final ActivityResultLauncher<Intent> openFilters = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    filters.readFilterExtras(result.getData());
+                    int count = filters.activeCount();
+                    binding.textFilters.setText(count > 0 ? "Filters (" + count + ")" : "Filters");
+                    loadListings();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +43,14 @@ public class ShoppingActivity extends AppCompatActivity {
         binding = ActivityShoppingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        adapter = new ListingAdapter(this::showListing);
+        adapter = new ListingAdapter(listing -> ListingDetailActivity.open(this, listing.optString("_id")));
         binding.listingGrid.setLayoutManager(new GridLayoutManager(this, 2));
         binding.listingGrid.setAdapter(adapter);
 
         binding.searchContainer.setOnClickListener(v -> askForSearch());
         binding.textLocation.setOnClickListener(v -> {
-            if (search != null) {
-                search = null;
+            if (filters.search != null) {
+                filters.search = null;
                 loadListings();
             }
         });
@@ -51,12 +61,9 @@ public class ShoppingActivity extends AppCompatActivity {
         setUpChip(binding.chipTech, "Electronics");
         setUpChip(binding.chipFurniture, "Furniture");
 
-        binding.btnFilters.setOnClickListener(v -> comingSoon("Filters"));
-        binding.navHome.setOnClickListener(v -> binding.listingGrid.smoothScrollToPosition(0));
-        binding.navSaved.setOnClickListener(v -> comingSoon("Saved items"));
-        binding.navSell.setOnClickListener(v -> comingSoon("Selling"));
-        binding.navChats.setOnClickListener(v -> comingSoon("Chats"));
-        binding.navYou.setOnClickListener(v -> showAccount());
+        binding.btnFilters.setOnClickListener(v -> openFilters.launch(FiltersActivity.intent(this, filters)));
+        BottomNav.setup(this, binding.navHome, binding.navSaved, binding.navSell, binding.navChats, binding.navYou);
+        binding.navHome.setOnClickListener(v -> binding.listingGrid.smoothScrollToPosition(0)); // already home
 
         loadListings();
     }
@@ -64,7 +71,7 @@ public class ShoppingActivity extends AppCompatActivity {
     private void loadListings() {
         binding.textStatus.setVisibility(View.VISIBLE);
         binding.textStatus.setText("Loading listings…");
-        Api.listings(category, search, Session.token(this), new Api.Callback() {
+        Api.listings(filters, Session.token(this), new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
                 JSONArray listings = data.optJSONArray("listings");
@@ -74,15 +81,15 @@ public class ShoppingActivity extends AppCompatActivity {
                 adapter.setListings(listings);
                 binding.listingGrid.scrollToPosition(0);
                 if (listings.length() == 0) {
-                    binding.textStatus.setText(search != null
-                            ? "No listings match \"" + search + "\"" : "No listings here yet");
+                    binding.textStatus.setText(filters.search != null
+                            ? "No listings match \"" + filters.search + "\"" : "No listings here yet");
                 } else {
                     binding.textStatus.setVisibility(View.GONE);
                 }
                 int total = data.optJSONObject("pagination") != null
                         ? data.optJSONObject("pagination").optInt("total", listings.length()) : listings.length();
-                binding.textLocation.setText(search != null
-                        ? "Results for \"" + search + "\" · tap to clear"
+                binding.textLocation.setText(filters.search != null
+                        ? "Results for \"" + filters.search + "\" · tap to clear"
                         : total + (total == 1 ? " listing" : " listings"));
             }
 
@@ -98,7 +105,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
     private void setUpChip(TextView chip, String chipCategory) {
         chip.setOnClickListener(v -> {
-            category = chipCategory;
+            filters.category = chipCategory;
             for (TextView other : new TextView[]{binding.chipAll, binding.chipTextbooks, binding.chipTech, binding.chipFurniture}) {
                 boolean selected = other == chip;
                 other.setBackgroundResource(selected ? R.drawable.filter_chip_selected_bg : R.drawable.filter_chip_bg);
@@ -114,9 +121,9 @@ public class ShoppingActivity extends AppCompatActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         input.setSingleLine(true);
-        if (search != null) {
-            input.setText(search);
-            input.setSelection(search.length());
+        if (filters.search != null) {
+            input.setText(filters.search);
+            input.setSelection(filters.search.length());
         }
         int pad = Math.round(20 * getResources().getDisplayMetrics().density);
         input.setPadding(pad, pad / 2, pad, pad / 2);
@@ -137,53 +144,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
     private void runSearch(String text) {
         String trimmed = text.trim();
-        search = trimmed.isEmpty() ? null : trimmed;
+        filters.search = trimmed.isEmpty() ? null : trimmed;
         loadListings();
-    }
-
-    /** A simple details view until the Listing Detail screen is built. */
-    private void showListing(JSONObject listing) {
-        JSONObject owner = listing.optJSONObject("owner");
-        StringBuilder details = new StringBuilder()
-                .append(ListingAdapter.price(listing.optDouble("price", 0)))
-                .append(" · ").append(listing.optString("condition"))
-                .append(" · ").append(listing.optString("category"))
-                .append("\n\n").append(listing.optString("description"));
-        if (!listing.optString("meetupArea").isEmpty()) {
-            details.append("\n\nMeetup area: ").append(listing.optString("meetupArea"));
-        }
-        if (owner != null) {
-            details.append("\nSeller: ").append(owner.optString("name"));
-            if (owner.optBoolean("isVerifiedStudent")) {
-                details.append(" ✓ Verified Student");
-            }
-        }
-        new AlertDialog.Builder(this)
-                .setTitle(listing.optString("title"))
-                .setMessage(details.toString())
-                .setPositiveButton("Close", null)
-                .show();
-    }
-
-    private void showAccount() {
-        if (!Session.isLoggedIn(this)) {
-            startActivity(new Intent(this, LandingActivity.class));
-            return;
-        }
-        new AlertDialog.Builder(this)
-                .setTitle(Session.name(this))
-                .setMessage(Session.email(this))
-                .setNegativeButton("Close", null)
-                .setPositiveButton("Log out", (d, which) -> {
-                    Session.clear(this);
-                    Intent intent = new Intent(this, LandingActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                })
-                .show();
-    }
-
-    private void comingSoon(String what) {
-        Toast.makeText(this, what + " Coming Soon!", Toast.LENGTH_SHORT).show();
     }
 }

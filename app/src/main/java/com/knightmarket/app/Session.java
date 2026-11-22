@@ -45,6 +45,10 @@ public final class Session {
         return prefs(context).getString(KEY_EMAIL, "");
     }
 
+    public static void updateName(Context context, String name) {
+        prefs(context).edit().putString(KEY_NAME, name).apply();
+    }
+
     public static void clear(Context context) {
         prefs(context).edit().clear().apply();
     }
