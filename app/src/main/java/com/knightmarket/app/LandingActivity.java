@@ -2,7 +2,6 @@ package com.knightmarket.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +14,14 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Already logged in on this phone: go straight to the marketplace
+        if (Session.isLoggedIn(this)) {
+            startActivity(new Intent(this, ShoppingActivity.class));
+            finish();
+            return;
+        }
+
         binding = ActivityLandingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
