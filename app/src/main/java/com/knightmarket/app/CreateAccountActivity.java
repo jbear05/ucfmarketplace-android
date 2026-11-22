@@ -2,6 +2,7 @@ package com.knightmarket.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,17 +34,17 @@ public class CreateAccountActivity extends AppCompatActivity {
         String password = binding.inputPassword.getText().toString();
 
         if (name.isEmpty()) {
-            binding.inputFullName.setError("Enter your full name");
+            showFieldError(binding.inputFullName, "Enter your full name");
             return;
         }
         // Same rule as the hint under the field
         if (!email.matches("^[^@\\s]+@(knights\\.)?ucf\\.edu$")) {
-            binding.inputEmail.setError("Use your ucf.edu or knights.ucf.edu email");
+            showFieldError(binding.inputEmail, "Use your ucf.edu or knights.ucf.edu email");
             return;
         }
         // Same rule as the server: 8+ characters with a number
         if (password.length() < 8 || !password.matches(".*\\d.*")) {
-            binding.inputPassword.setError("At least 8 characters, including a number");
+            showFieldError(binding.inputPassword, "At least 8 characters, including a number");
             return;
         }
         if (!binding.checkboxRules.isChecked()) {
@@ -73,5 +74,12 @@ public class CreateAccountActivity extends AppCompatActivity {
     private void setBusy(boolean busy) {
         binding.btnContinue.setEnabled(!busy);
         binding.btnContinue.setText(busy ? "Creating account…" : "Continue");
+    }
+
+    /** Marks the field and says why, since the error bubble only shows while the field has focus. */
+    private void showFieldError(EditText field, String message) {
+        field.setError(message);
+        field.requestFocus();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

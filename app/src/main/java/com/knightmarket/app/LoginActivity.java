@@ -3,6 +3,7 @@ package com.knightmarket.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.knightmarket.app.databinding.ActivityLoginBinding;
 
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,11 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         String password = binding.inputPassword.getText().toString();
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.inputEmail.setError("Enter your email");
+            showFieldError(binding.inputEmail, "Enter your email");
             return;
         }
         if (password.isEmpty()) {
-            binding.inputPassword.setError("Enter your password");
+            showFieldError(binding.inputPassword, "Enter your password");
             return;
         }
 
@@ -60,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(int status, String message) {
                 setBusy(false);
-                if (status == 403 && message.toLowerCase().contains("verify")) {
+                if (status == 403 && message.toLowerCase(Locale.US).contains("verify")) {
                     // Account exists but the email link hasn't been opened yet
                     Intent intent = new Intent(LoginActivity.this, VerifyEmailActivity.class);
                     intent.putExtra(VerifyEmailActivity.EXTRA_EMAIL, email);
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     private void forgotPassword() {
         String email = binding.inputEmail.getText().toString().trim();
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.inputEmail.setError("Enter your email first");
+            showFieldError(binding.inputEmail, "Enter your email first");
             return;
         }
         Api.forgotPassword(email, new Api.Callback() {
@@ -99,5 +102,12 @@ public class LoginActivity extends AppCompatActivity {
     private void setBusy(boolean busy) {
         binding.btnLogin.setEnabled(!busy);
         binding.btnLogin.setText(busy ? "Logging in…" : "Log in");
+    }
+
+    /** Marks the field and says why, since the error bubble only shows while the field has focus. */
+    private void showFieldError(EditText field, String message) {
+        field.setError(message);
+        field.requestFocus();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

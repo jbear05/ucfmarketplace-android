@@ -12,6 +12,8 @@ import com.knightmarket.app.databinding.ActivityVerifyEmailBinding;
 
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 /**
  * The KnightMarket server verifies email with a link (not a 6-digit code), so this screen
  * asks the student to open the link, then logs them in when they come back.
@@ -98,7 +100,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisLeft) {
                 long seconds = (millisLeft + 999) / 1000;
-                binding.resendText.setText(String.format("Didn't get it? Resend in %d:%02d", seconds / 60, seconds % 60));
+                binding.resendText.setText(String.format(Locale.US, "Didn't get it? Resend in %d:%02d", seconds / 60, seconds % 60));
             }
 
             @Override
