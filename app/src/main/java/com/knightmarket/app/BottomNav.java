@@ -16,7 +16,7 @@ public final class BottomNav {
     public static void setup(Activity activity, View home, View saved, View sell, View chats, View you) {
         home.setOnClickListener(v -> open(activity, ShoppingActivity.class));
         saved.setOnClickListener(v -> open(activity, SavedItemsActivity.class));
-        sell.setOnClickListener(v -> comingSoon(activity, "Selling"));   // TODO: CreateListingActivity
+        sell.setOnClickListener(v -> open(activity, CreateListingActivity.class));
         chats.setOnClickListener(v -> comingSoon(activity, "Chats"));    // TODO: MessagesActivity
         you.setOnClickListener(v -> open(activity, UserProfileActivity.class));
     }

@@ -29,8 +29,7 @@ public class MyListingsActivity extends AppCompatActivity {
 
         binding.back.setOnClickListener(v -> finish());
         binding.newOwnedListing.setOnClickListener(v ->
-                Toast.makeText(this, "Create Listing Coming Soon!", Toast.LENGTH_SHORT).show());
-        // TODO: open CreateListingActivity once it's built
+                startActivity(new Intent(this, CreateListingActivity.class)));
 
         adapter = new MyListingAdapter(new MyListingAdapter.Actions() {
             @Override
