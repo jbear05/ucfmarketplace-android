@@ -68,7 +68,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onError(int status, String message) {
                 if (status == 401) {
-                    logOut(); // the login expired
+                    Session.expired(UserProfileActivity.this);
                 } else {
                     Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
@@ -127,6 +127,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(int status, String message) {
+                            if (status == 401) {
+                                Session.expired(UserProfileActivity.this);
+                                return;
+                            }
                             Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_LONG).show();
                         }
                     });
@@ -162,6 +166,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(int status, String msg) {
+                            if (status == 401) {
+                                Session.expired(UserProfileActivity.this);
+                                return;
+                            }
                             Toast.makeText(UserProfileActivity.this, msg, Toast.LENGTH_LONG).show();
                         }
                     });

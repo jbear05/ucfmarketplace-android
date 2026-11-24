@@ -84,6 +84,10 @@ public class MyListingsActivity extends AppCompatActivity {
 
             @Override
             public void onError(int status, String message) {
+                if (status == 401) {
+                    Session.expired(MyListingsActivity.this);
+                    return;
+                }
                 binding.myList.setVisibility(View.GONE);
                 binding.myEmpty.setVisibility(View.VISIBLE);
                 binding.myEmpty.setText(message);
@@ -114,6 +118,10 @@ public class MyListingsActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(int status, String message) {
+                                if (status == 401) {
+                                    Session.expired(MyListingsActivity.this);
+                                    return;
+                                }
                                 Toast.makeText(MyListingsActivity.this, message, Toast.LENGTH_LONG).show();
                             }
                         }))

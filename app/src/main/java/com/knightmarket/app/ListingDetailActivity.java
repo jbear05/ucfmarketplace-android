@@ -157,6 +157,10 @@ public class ListingDetailActivity extends AppCompatActivity {
             public void onError(int status, String message) {
                 favorited = !favorited;
                 showFavorite();
+                if (status == 401) {
+                    Session.expired(ListingDetailActivity.this);
+                    return;
+                }
                 Toast.makeText(ListingDetailActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });

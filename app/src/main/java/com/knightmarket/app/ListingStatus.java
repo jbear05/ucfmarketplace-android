@@ -63,6 +63,10 @@ public final class ListingStatus {
 
                         @Override
                         public void onError(int code, String message) {
+                            if (code == 401) {
+                                Session.expired(activity);
+                                return;
+                            }
                             Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
                         }
                     });

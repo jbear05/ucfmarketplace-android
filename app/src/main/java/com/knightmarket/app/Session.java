@@ -1,6 +1,9 @@
 package com.knightmarket.app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 import android.content.SharedPreferences;
 
 import org.json.JSONObject;
@@ -51,5 +54,17 @@ public final class Session {
 
     public static void clear(Context context) {
         prefs(context).edit().clear().apply();
+    }
+
+    /**
+     * Call this when the server answers 401 to a logged-in request: the 7-day login ran out
+     * (or the account is gone). Logs out on the phone too and goes back to the start screen.
+     */
+    public static void expired(Activity activity) {
+        clear(activity);
+        Toast.makeText(activity, "Your login expired. Please log in again.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(activity, LandingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
     }
 }
