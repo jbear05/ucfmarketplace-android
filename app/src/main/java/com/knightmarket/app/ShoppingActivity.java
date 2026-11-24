@@ -71,6 +71,9 @@ public class ShoppingActivity extends AppCompatActivity {
     private void loadListings() {
         binding.textStatus.setVisibility(View.VISIBLE);
         binding.textStatus.setText("Loading listings…");
+        // Drop the retry tap from an earlier failure so it only works while the error shows.
+        binding.textStatus.setOnClickListener(null);
+        binding.textStatus.setClickable(false);
         Api.listings(filters, Session.token(this), new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
