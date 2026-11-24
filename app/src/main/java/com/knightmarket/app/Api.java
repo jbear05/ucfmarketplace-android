@@ -89,6 +89,11 @@ public final class Api {
         request("GET", "/listings?limit=50" + filters.toQuery(), null, token, callback);
     }
 
+    /** One page of the public feed (active and pending, newest first); data.pagination has totalPages. */
+    public static void listingsPage(int page, int limit, String token, Callback callback) {
+        request("GET", "/listings?page=" + page + "&limit=" + limit, null, token, callback);
+    }
+
     /** One listing with its owner; data is the listing itself. */
     public static void listing(String id, String token, Callback callback) {
         request("GET", "/listings/" + encode(id), null, token, callback);
@@ -134,6 +139,18 @@ public final class Api {
         JSONObject body = new JSONObject();
         put(body, "message", message);
         request("POST", "/threads/contact-admin", body, token, callback);
+    }
+
+    // ── Sellers ──────────────────────────────────────────────────────────────
+
+    /** A seller's public profile: data.profile (with salesCount) and data.listings (their active ones). */
+    public static void userProfile(String userId, String token, Callback callback) {
+        request("GET", "/users/" + encode(userId), null, token, callback);
+    }
+
+    /** Reviews other students left for this user, newest first: data.ratings. */
+    public static void userRatings(String userId, Callback callback) {
+        request("GET", "/ratings/user/" + encode(userId), null, null, callback);
     }
 
     // ── Plumbing ─────────────────────────────────────────────────────────────
