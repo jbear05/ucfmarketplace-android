@@ -99,6 +99,7 @@ public class ListingDetailActivity extends AppCompatActivity {
             badge.append(String.format(Locale.US, "★ %.1f (%d)", owner.optDouble("ratingAvg"), owner.optInt("ratingCount")));
         }
         binding.sellerBadge.setText(badge.length() > 0 ? badge : "No ratings yet");
+        binding.seller.setOnClickListener(v -> SellerProfileActivity.open(this, owner));
 
         images = listing.optJSONArray("images") != null ? listing.optJSONArray("images") : new JSONArray();
         photoIndex = 0;
@@ -146,7 +147,8 @@ public class ListingDetailActivity extends AppCompatActivity {
         }
         favorited = !favorited; // show it right away, then confirm with the server
         showFavorite();
-        Api.toggleFavorite(listingId, Session.token(this), new Api.Callback() {
+        String token = Session.token(this);
+        Api.toggleFavorite(listingId, token, new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
                 favorited = data.optBoolean("isFavorited", favorited);
@@ -157,6 +159,10 @@ public class ListingDetailActivity extends AppCompatActivity {
             public void onError(int status, String message) {
                 favorited = !favorited;
                 showFavorite();
+                if (status == 401) {
+                    Session.expired(ListingDetailActivity.this, token);
+                    return;
+                }
                 Toast.makeText(ListingDetailActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });

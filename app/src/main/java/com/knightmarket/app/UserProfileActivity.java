@@ -58,7 +58,8 @@ public class UserProfileActivity extends AppCompatActivity {
         // Show what's saved on the phone right away, then the server's latest
         binding.profileName.setText(Session.name(this));
         binding.profileEmail.setText(Session.email(this));
-        Api.me(Session.token(this), new Api.Callback() {
+        String token = Session.token(this);
+        Api.me(token, new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
                 user = data;
@@ -68,7 +69,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onError(int status, String message) {
                 if (status == 401) {
-                    logOut(); // the login expired
+                    Session.expired(UserProfileActivity.this, token);
                 } else {
                     Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
@@ -115,7 +116,8 @@ public class UserProfileActivity extends AppCompatActivity {
                         Toast.makeText(this, "Name can't be empty", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Api.updateName(name, Session.token(this), new Api.Callback() {
+                    String token = Session.token(this);
+                    Api.updateName(name, token, new Api.Callback() {
                         @Override
                         public void onSuccess(JSONObject data, String message) {
                             JSONObject updated = data.optJSONObject("user");
@@ -127,6 +129,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(int status, String message) {
+                            if (status == 401) {
+                                Session.expired(UserProfileActivity.this, token);
+                                return;
+                            }
                             Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_LONG).show();
                         }
                     });
@@ -154,7 +160,8 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (message.isEmpty()) {
                         return;
                     }
-                    Api.contactAdmin(message, Session.token(this), new Api.Callback() {
+                    String token = Session.token(this);
+                    Api.contactAdmin(message, token, new Api.Callback() {
                         @Override
                         public void onSuccess(JSONObject data, String msg) {
                             Toast.makeText(UserProfileActivity.this, "Message sent to admin", Toast.LENGTH_SHORT).show();
@@ -162,6 +169,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(int status, String msg) {
+                            if (status == 401) {
+                                Session.expired(UserProfileActivity.this, token);
+                                return;
+                            }
                             Toast.makeText(UserProfileActivity.this, msg, Toast.LENGTH_LONG).show();
                         }
                     });

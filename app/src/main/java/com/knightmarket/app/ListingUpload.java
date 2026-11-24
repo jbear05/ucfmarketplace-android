@@ -42,6 +42,7 @@ public class ListingUpload extends AndroidViewModel {
 
     private boolean running;
     private Listener listener;
+    private String token; // the login the last upload was sent with
 
     // A result that arrived while no screen was attached (mid-rotation)
     private boolean hasResult;
@@ -55,6 +56,11 @@ public class ListingUpload extends AndroidViewModel {
 
     public boolean isRunning() {
         return running;
+    }
+
+    /** The token the last upload used, for Session.expired() on a 401. */
+    public String token() {
+        return token;
     }
 
     public void attach(Listener listener) {
@@ -77,6 +83,7 @@ public class ListingUpload extends AndroidViewModel {
             return;
         }
         running = true;
+        this.token = token;
         ContentResolver resolver = getApplication().getContentResolver();
         List<Uri> toUpload = new ArrayList<>(photos);
         worker.execute(() -> {

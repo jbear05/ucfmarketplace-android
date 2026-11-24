@@ -34,7 +34,8 @@ after a quiet spell can take up to a minute.
   ```
 
 ### Done
-Landing, Log in (+ Forgot password), Create account, Verify email (link), Profile photo (skip),
+Landing, Log in (+ Forgot password), Create account, **Community rules** (from the sign-up checkbox; "I Agree" ticks it),
+Verify email (link), Profile photo (skip),
 Shopping (live feed, categories, search), **Listing detail** (photos, save, directions, owner's Change Status),
 **Filters** (price, condition, sort), **Saved**, **My Listings** (change status, delete),
 **Profile** (edit name, Contact Admin, log out). Shared helpers: `BottomNav`, `ListingStatus`, `ListingFilters`,

@@ -27,6 +27,16 @@ public class ShoppingActivity extends AppCompatActivity {
 
     private final ListingFilters filters = new ListingFilters(); // category, search, condition, price, sort
 
+    // Bumped when another screen changes what the feed should show (e.g. a new listing),
+    // so the feed reloads when you come back to it instead of staying stale.
+    private static int feedVersion;
+    private int shownVersion;
+
+    /** Call after creating or changing a listing; the feed reloads next time it's shown. */
+    public static void refreshOnReturn() {
+        feedVersion++;
+    }
+
     private final ActivityResultLauncher<Intent> openFilters = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -65,12 +75,25 @@ public class ShoppingActivity extends AppCompatActivity {
         BottomNav.setup(this, binding.navHome, binding.navSaved, binding.navSell, binding.navChats, binding.navYou);
         binding.navHome.setOnClickListener(v -> binding.listingGrid.smoothScrollToPosition(0)); // already home
 
+        shownVersion = feedVersion;
         loadListings();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shownVersion != feedVersion) {
+            shownVersion = feedVersion;
+            loadListings();
+        }
     }
 
     private void loadListings() {
         binding.textStatus.setVisibility(View.VISIBLE);
         binding.textStatus.setText("Loading listings…");
+        // Drop the retry tap from an earlier failure so it only works while the error shows.
+        binding.textStatus.setOnClickListener(null);
+        binding.textStatus.setClickable(false);
         Api.listings(filters, Session.token(this), new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {

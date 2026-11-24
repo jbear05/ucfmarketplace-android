@@ -314,15 +314,14 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
         }
         if (listing != null) {
             Toast.makeText(this, "Your listing is live!", Toast.LENGTH_SHORT).show();
+            ShoppingActivity.refreshOnReturn();
             ListingDetailActivity.open(this, listing.optString("_id"));
             finish();
             return;
         }
         if (status == 401) {
-            Toast.makeText(this, "Your session expired. Please log in again.", Toast.LENGTH_LONG).show();
-            Session.clear(this);
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+            // Ignored if it came from an older login (the user logged out and back in meanwhile)
+            Session.expired(this, upload.token());
             return;
         }
         new AlertDialog.Builder(this)

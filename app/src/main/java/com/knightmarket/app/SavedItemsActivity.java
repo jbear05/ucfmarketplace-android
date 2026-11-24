@@ -49,7 +49,8 @@ public class SavedItemsActivity extends AppCompatActivity {
             return;
         }
         binding.savedEmpty.setOnClickListener(null);
-        Api.me(Session.token(this), new Api.Callback() {
+        String token = Session.token(this);
+        Api.me(token, new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
                 // Some saved listings may have been deleted since; keep only real ones
@@ -74,7 +75,8 @@ public class SavedItemsActivity extends AppCompatActivity {
             @Override
             public void onError(int status, String message) {
                 if (status == 401) {
-                    Session.clear(SavedItemsActivity.this); // the login expired
+                    // the login expired; a slow 401 from an older login is ignored
+                    Session.clearIfCurrent(SavedItemsActivity.this, token);
                     load();
                 } else {
                     showEmpty("Couldn't load your saved listings", message);
