@@ -2,7 +2,6 @@ package com.knightmarket.app;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -32,7 +32,6 @@ import com.knightmarket.app.databinding.ActivityCreateListingBinding;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,18 +43,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Screens 13-14, "List an Item": title, price, category, campus, meetup spot, condition,
- * description and up to 8 photos (the first is the cover). Publishing sends it all to
- * POST /listings and opens the new listing.
+ * Screens 13-14, "List an Item": title, price, category, campus, condition, description,
+ * the AI-generated tag and up to 8 photos (the first is the cover). Publishing sends it all to
+ * POST /listings (through {@link ListingUpload}, so it survives rotation) and opens the new listing.
  */
-public class CreateListingActivity extends AppCompatActivity {
+public class CreateListingActivity extends AppCompatActivity implements ListingUpload.Listener {
 
     private static final int MAX_PHOTOS = 8;
     private static final BigDecimal MAX_PRICE = new BigDecimal("100000");
     private static final String STATE_PHOTOS = "photos";
 
-    // Photos are resized before upload: the server keeps at most 1200 px and takes 5 MB per file
-    private static final int UPLOAD_MAX_SIDE = 1600;
     private static final int THUMB_MAX_SIDE = 240;
 
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
@@ -64,7 +61,7 @@ public class CreateListingActivity extends AppCompatActivity {
     private ActivityCreateListingBinding binding;
     private ArrayList<Uri> photos = new ArrayList<>();
     private final Map<Uri, Bitmap> thumbnails = new HashMap<>();
-    private boolean publishing;
+    private ListingUpload upload;
 
     private ActivityResultLauncher<PickVisualMediaRequest> pickOne;
     private final List<ActivityResultLauncher<PickVisualMediaRequest>> pickMany = new ArrayList<>();
@@ -84,6 +81,10 @@ public class CreateListingActivity extends AppCompatActivity {
         }
 
         registerPickers();
+
+        upload = new ViewModelProvider(this).get(ListingUpload.class);
+        setPublishing(upload.isRunning());
+        upload.attach(this); // delivers a result that arrived while the screen was rotating
 
         binding.back.setOnClickListener(v -> leave());
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -116,6 +117,7 @@ public class CreateListingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        upload.detach(this);
         worker.shutdownNow();
     }
 
@@ -236,7 +238,7 @@ public class CreateListingActivity extends AppCompatActivity {
         }
         worker.execute(() -> {
             try {
-                Bitmap bitmap = decode(uri, THUMB_MAX_SIDE);
+                Bitmap bitmap = ListingUpload.decode(getContentResolver(), uri, THUMB_MAX_SIDE);
                 main.post(() -> {
                     thumbnails.put(uri, bitmap);
                     view.setImageBitmap(bitmap);
@@ -253,38 +255,14 @@ public class CreateListingActivity extends AppCompatActivity {
         });
     }
 
-    /** Decodes a picked photo upright (EXIF applied), scaled so its longest side is at most maxSide. */
-    private Bitmap decode(Uri uri, int maxSide) throws IOException {
-        ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), uri);
-        return ImageDecoder.decodeBitmap(source, (decoder, info, src) -> {
-            int width = info.getSize().getWidth();
-            int height = info.getSize().getHeight();
-            int longest = Math.max(width, height);
-            if (longest > maxSide) {
-                float scale = (float) maxSide / longest;
-                decoder.setTargetSize(Math.max(1, Math.round(width * scale)), Math.max(1, Math.round(height * scale)));
-            }
-            decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE); // so it can be compressed
-        });
-    }
-
-    private byte[] jpeg(Uri uri) throws IOException {
-        Bitmap bitmap = decode(uri, UPLOAD_MAX_SIDE);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
-        bitmap.recycle();
-        return out.toByteArray();
-    }
-
     // ── Publish ──────────────────────────────────────────────────────────────
 
     private void publish() {
-        if (publishing) {
+        if (upload.isRunning()) {
             return;
         }
         String title = text(binding.listingTitle);
         String priceText = text(binding.price);
-        String meetupSpot = text(binding.meetupArea);
         String description = text(binding.description);
 
         // Check every field and point at the first problem
@@ -301,10 +279,6 @@ public class CreateListingActivity extends AppCompatActivity {
             binding.price.setError("Price can't be more than $100,000");
             if (firstError == null) firstError = binding.price;
         }
-        if (meetupSpot.isEmpty()) {
-            binding.meetupArea.setError("Where on campus can buyers meet you?");
-            if (firstError == null) firstError = binding.meetupArea;
-        }
         if (firstError != null) {
             firstError.requestFocus();
             return;
@@ -315,68 +289,50 @@ public class CreateListingActivity extends AppCompatActivity {
             return;
         }
 
+        String campus = campusValue(chosen(binding.campusGroup));
         Map<String, String> fields = new LinkedHashMap<>();
         fields.put("title", title);
         fields.put("description", description);
         fields.put("price", price.stripTrailingZeros().toPlainString());
         fields.put("category", chosen(binding.categoryGroup));
         fields.put("condition", chosen(binding.conditionGroup));
-        fields.put("meetupArea", meetupSpot + ", " + chosen(binding.campusGroup));
+        fields.put("campus", campus);
+        // Older servers want a meetup area instead of a campus; newer ones set it from the campus
+        fields.put("meetupArea", campus);
+        fields.put("isAiGenerated", binding.aiGenerated.isChecked() ? "true" : "false");
 
         setPublishing(true);
-        List<Uri> toUpload = new ArrayList<>(photos);
-        worker.execute(() -> {
-            List<byte[]> files = new ArrayList<>();
-            try {
-                for (Uri uri : toUpload) {
-                    files.add(jpeg(uri));
-                }
-            } catch (IOException | OutOfMemoryError e) {
-                main.post(() -> {
-                    setPublishing(false);
-                    Toast.makeText(this, "Couldn't read one of the photos. Remove it and try again.",
-                            Toast.LENGTH_LONG).show();
-                });
-                return;
-            }
-            main.post(() -> upload(fields, files));
-        });
+        upload.start(fields, photos, Session.token(this));
     }
 
-    private void upload(Map<String, String> fields, List<byte[]> files) {
-        Api.createListing(fields, files, Session.token(this), new Api.Callback() {
-            @Override
-            public void onSuccess(JSONObject data, String message) {
-                JSONObject listing = data.optJSONObject("listing");
-                Toast.makeText(CreateListingActivity.this, "Your listing is live!", Toast.LENGTH_SHORT).show();
-                if (listing != null) {
-                    ListingDetailActivity.open(CreateListingActivity.this, listing.optString("_id"));
-                }
-                finish();
-            }
-
-            @Override
-            public void onError(int status, String message) {
-                setPublishing(false);
-                if (status == 401) {
-                    Toast.makeText(CreateListingActivity.this, "Your session expired. Please log in again.",
-                            Toast.LENGTH_LONG).show();
-                    Session.clear(CreateListingActivity.this);
-                    startActivity(new Intent(CreateListingActivity.this, LoginActivity.class));
-                    finish();
-                    return;
-                }
-                new AlertDialog.Builder(CreateListingActivity.this)
-                        .setTitle("Couldn't publish")
-                        .setMessage(message)
-                        .setPositiveButton("OK", null)
-                        .show();
-            }
-        });
+    /** Called by ListingUpload on the main thread, on whichever screen is showing now. */
+    @Override
+    public void onUploadDone(JSONObject listing, int status, String message) {
+        setPublishing(false);
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+        if (listing != null) {
+            Toast.makeText(this, "Your listing is live!", Toast.LENGTH_SHORT).show();
+            ListingDetailActivity.open(this, listing.optString("_id"));
+            finish();
+            return;
+        }
+        if (status == 401) {
+            Toast.makeText(this, "Your session expired. Please log in again.", Toast.LENGTH_LONG).show();
+            Session.clear(this);
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("Couldn't publish")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     private void setPublishing(boolean on) {
-        publishing = on;
         binding.publish.setEnabled(!on);
         binding.publish.setText(on ? "Publishing…" : "Publish Listing");
     }
@@ -385,13 +341,12 @@ public class CreateListingActivity extends AppCompatActivity {
 
     /** Asks before throwing away a half-filled form. */
     private void leave() {
-        if (publishing) {
+        if (upload.isRunning()) {
             Toast.makeText(this, "Hang on, your listing is uploading", Toast.LENGTH_SHORT).show();
             return;
         }
         boolean started = !photos.isEmpty() || !text(binding.listingTitle).isEmpty()
-                || !text(binding.price).isEmpty() || !text(binding.description).isEmpty()
-                || !text(binding.meetupArea).isEmpty();
+                || !text(binding.price).isEmpty() || !text(binding.description).isEmpty();
         if (!started) {
             finish();
             return;
@@ -415,6 +370,11 @@ public class CreateListingActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    /** The chips say "Rosen Campus"; the server's campus names are Main Campus, Downtown, Rosen, Lake Nona. */
+    static String campusValue(String chip) {
+        return chip.equals("Main Campus") ? chip : chip.replace(" Campus", "");
     }
 
     private String chosen(ChipGroup group) {
