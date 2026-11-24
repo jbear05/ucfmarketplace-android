@@ -41,6 +41,9 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".SellerProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".VerifyEmailActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
