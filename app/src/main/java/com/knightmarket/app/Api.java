@@ -130,6 +130,18 @@ public final class Api {
         request("POST", "/threads/contact-admin", body, token, callback);
     }
 
+    // ── Sellers ──────────────────────────────────────────────────────────────
+
+    /** A seller's public profile: data.profile (with salesCount) and data.listings (their active ones). */
+    public static void userProfile(String userId, String token, Callback callback) {
+        request("GET", "/users/" + encode(userId), null, token, callback);
+    }
+
+    /** Reviews other students left for this user, newest first: data.ratings. */
+    public static void userRatings(String userId, Callback callback) {
+        request("GET", "/ratings/user/" + encode(userId), null, null, callback);
+    }
+
     // ── Plumbing ─────────────────────────────────────────────────────────────
 
     private static void request(String method, String path, JSONObject body, String token, Callback callback) {

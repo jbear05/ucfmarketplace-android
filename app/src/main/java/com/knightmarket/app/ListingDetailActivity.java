@@ -99,6 +99,7 @@ public class ListingDetailActivity extends AppCompatActivity {
             badge.append(String.format(Locale.US, "★ %.1f (%d)", owner.optDouble("ratingAvg"), owner.optInt("ratingCount")));
         }
         binding.sellerBadge.setText(badge.length() > 0 ? badge : "No ratings yet");
+        binding.seller.setOnClickListener(v -> SellerProfileActivity.open(this, owner));
 
         images = listing.optJSONArray("images") != null ? listing.optJSONArray("images") : new JSONArray();
         photoIndex = 0;
