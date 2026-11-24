@@ -115,6 +115,12 @@ public final class Api {
         request("POST", "/listings/" + encode(id) + "/favorite", null, token, callback);
     }
 
+    /** Pins for the map: data.pins with _id, title, price, coordinates, status, images, category. */
+    public static void mapPins(String category, String token, Callback callback) {
+        String query = category != null ? "?category=" + encode(category) : "";
+        request("GET", "/listings/map" + query, null, token, callback);
+    }
+
     // ── Profile ──────────────────────────────────────────────────────────────
 
     public static void updateName(String name, String token, Callback callback) {

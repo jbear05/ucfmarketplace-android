@@ -4,6 +4,8 @@
 
     <!-- Talks to the KnightMarket API -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- osmdroid checks for a connection before downloading map tiles -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
+        <activity
+            android:name=".MapActivity"
+            android:exported="false" />
         <activity
             android:name=".ListingDetailActivity"
             android:exported="false" />

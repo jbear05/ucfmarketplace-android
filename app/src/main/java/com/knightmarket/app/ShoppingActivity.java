@@ -61,6 +61,7 @@ public class ShoppingActivity extends AppCompatActivity {
         setUpChip(binding.chipTech, "Electronics");
         setUpChip(binding.chipFurniture, "Furniture");
 
+        binding.btnMap.setOnClickListener(v -> MapActivity.open(this, filters.category));
         binding.btnFilters.setOnClickListener(v -> openFilters.launch(FiltersActivity.intent(this, filters)));
         BottomNav.setup(this, binding.navHome, binding.navSaved, binding.navSell, binding.navChats, binding.navYou);
         binding.navHome.setOnClickListener(v -> binding.listingGrid.smoothScrollToPosition(0)); // already home
