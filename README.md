@@ -38,11 +38,12 @@ Landing, Log in (+ Forgot password), Create account, **Community rules** (from t
 Verify email (link), Profile photo (skip),
 Shopping (live feed, categories, search), **Listing detail** (photos, save, directions, owner's Change Status),
 **Filters** (price, condition, sort), **Saved**, **My Listings** (change status, delete),
-**Profile** (edit name, Contact Admin, log out). Shared helpers: `BottomNav`, `ListingStatus`, `ListingFilters`,
+**Profile** (edit name, Contact Admin, log out), **Map** (price pins from `GET /listings/map`, category picker,
+preview card; osmdroid, no API key; opens from the Map button on Shopping). Shared helpers: `BottomNav`, `ListingStatus`, `ListingFilters`,
 `SystemBars` (keeps screens clear of the status bar on Android 15+).
 
 ## Still to build
-These four match features of the KnightMarket Flutter and web apps. Everything they need is already on the server.
+These match features of the KnightMarket Flutter and web apps. Everything they need is already on the server.
 
 ### 1. Create and edit a listing (Sell tab, + in My Listings, Edit)
 - Screen: `activity_create_listing.xml` (layout only). Edit can reuse it, filled in from `GET /listings/:id`.
@@ -77,9 +78,3 @@ These four match features of the KnightMarket Flutter and web apps. Everything t
 - After the exchange: `PATCH /threads/:id/meetup/complete`, then each side rates with `POST /threads/:id/rate`
   `{ score: 1-5, feedback }`. Ratings show on Profile and Listing detail already.
 - A user's ratings: `GET /ratings/user/:id`.
-
-### 4. Map
-- Screen: `activity_map.xml` (layout only).
-- `GET /listings/map` (optional `category`) returns `data.pins` with `_id`, `title`, `price`, `coordinates`
-  (`[lng, lat]`), `images`, `category`. Tap a pin: `ListingDetailActivity.open(this, pin._id)`.
-- Map library: osmdroid (OpenStreetMap, no API key, like the Flutter app) or Google Maps (needs a key).

@@ -124,6 +124,12 @@ public final class Api {
         request("POST", "/listings/" + encode(id) + "/favorite", null, token, callback);
     }
 
+    /** Pins for the map: data.pins with _id, title, price, coordinates, status, images, category. */
+    public static void mapPins(String category, String token, Callback callback) {
+        String query = category != null ? "?category=" + encode(category) : "";
+        request("GET", "/listings/map" + query, null, token, callback);
+    }
+
     /**
      * POST /listings as multipart/form-data. fields holds title, description, price, category,
      * condition and meetupArea; photos are JPEG bytes sent in the "images" field (first = cover).
