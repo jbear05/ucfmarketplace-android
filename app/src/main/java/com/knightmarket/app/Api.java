@@ -15,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,6 +34,8 @@ public final class Api {
 
     // The free server can take up to a minute to wake up after a quiet spell
     private static final int TIMEOUT_MS = 60_000;
+    // Uploading photos to Cloudinary takes longer than a plain JSON call
+    private static final int UPLOAD_TIMEOUT_MS = 180_000;
 
     public interface Callback {
         void onSuccess(JSONObject data, String message);
@@ -115,6 +119,16 @@ public final class Api {
         request("POST", "/listings/" + encode(id) + "/favorite", null, token, callback);
     }
 
+    /**
+     * POST /listings as multipart/form-data. fields holds title, description, price, category,
+     * condition and meetupArea; photos are JPEG bytes sent in the "images" field (first = cover).
+     * data.listing is the new listing.
+     */
+    public static void createListing(Map<String, String> fields, List<byte[]> photos, String token,
+                                     Callback callback) {
+        multipart("POST", "/listings", fields, photos, token, callback);
+    }
+
     // ── Profile ──────────────────────────────────────────────────────────────
 
     public static void updateName(String name, String token, Callback callback) {
@@ -133,44 +147,80 @@ public final class Api {
     // ── Plumbing ─────────────────────────────────────────────────────────────
 
     private static void request(String method, String path, JSONObject body, String token, Callback callback) {
+        byte[] payload = body != null ? body.toString().getBytes(StandardCharsets.UTF_8) : null;
+        EXECUTOR.execute(() -> send(method, path, token, "application/json; charset=utf-8", payload,
+                TIMEOUT_MS, callback));
+    }
+
+    /** Text fields plus image files, the format the server's multer upload expects. */
+    private static void multipart(String method, String path, Map<String, String> fields, List<byte[]> photos,
+                                  String token, Callback callback) {
         EXECUTOR.execute(() -> {
-            int status = 0;
+            String boundary = "KnightMarket" + System.nanoTime();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
             try {
-                HttpURLConnection connection = (HttpURLConnection) new URL(BASE_URL + path).openConnection();
-                connection.setRequestMethod(method);
-                connection.setConnectTimeout(TIMEOUT_MS);
-                connection.setReadTimeout(TIMEOUT_MS);
-                connection.setRequestProperty("Accept", "application/json");
-                if (token != null) {
-                    connection.setRequestProperty("Authorization", "Bearer " + token);
+                for (Map.Entry<String, String> field : fields.entrySet()) {
+                    out.write(("--" + boundary + "\r\n"
+                            + "Content-Disposition: form-data; name=\"" + field.getKey() + "\"\r\n\r\n"
+                            + field.getValue() + "\r\n").getBytes(StandardCharsets.UTF_8));
                 }
-                if (body != null) {
-                    connection.setDoOutput(true);
-                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                    try (OutputStream out = connection.getOutputStream()) {
-                        out.write(body.toString().getBytes(StandardCharsets.UTF_8));
-                    }
+                for (int i = 0; i < photos.size(); i++) {
+                    out.write(("--" + boundary + "\r\n"
+                            + "Content-Disposition: form-data; name=\"images\"; filename=\"photo" + (i + 1) + ".jpg\"\r\n"
+                            + "Content-Type: image/jpeg\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                    out.write(photos.get(i));
+                    out.write("\r\n".getBytes(StandardCharsets.UTF_8));
                 }
-
-                status = connection.getResponseCode();
-                InputStream stream = status >= 400 ? connection.getErrorStream() : connection.getInputStream();
-                String text = stream == null ? "" : read(stream);
-                connection.disconnect();
-
-                JSONObject json = text.isEmpty() ? new JSONObject() : new JSONObject(text);
-                String message = json.optString("message", "");
-                if (status < 400 && json.optBoolean("success", false)) {
-                    JSONObject data = json.optJSONObject("data");
-                    deliverSuccess(callback, data != null ? data : new JSONObject(), message);
-                } else {
-                    deliverError(callback, status, errorText(json, message));
-                }
+                out.write(("--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
-                deliverError(callback, status, "Can't reach KnightMarket. Check your connection and try again.");
-            } catch (JSONException e) {
-                deliverError(callback, status, "Unexpected response from the server.");
+                deliverError(callback, 0, "Couldn't prepare the photos. Please try again.");
+                return;
             }
+            send(method, path, token, "multipart/form-data; boundary=" + boundary, out.toByteArray(),
+                    UPLOAD_TIMEOUT_MS, callback);
         });
+    }
+
+    /** Runs on a background thread: sends the request and delivers the result on the main thread. */
+    private static void send(String method, String path, String token, String contentType, byte[] payload,
+                             int timeoutMs, Callback callback) {
+        int status = 0;
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(BASE_URL + path).openConnection();
+            connection.setRequestMethod(method);
+            connection.setConnectTimeout(TIMEOUT_MS);
+            connection.setReadTimeout(timeoutMs);
+            connection.setRequestProperty("Accept", "application/json");
+            if (token != null) {
+                connection.setRequestProperty("Authorization", "Bearer " + token);
+            }
+            if (payload != null) {
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", contentType);
+                connection.setFixedLengthStreamingMode(payload.length);
+                try (OutputStream out = connection.getOutputStream()) {
+                    out.write(payload);
+                }
+            }
+
+            status = connection.getResponseCode();
+            InputStream stream = status >= 400 ? connection.getErrorStream() : connection.getInputStream();
+            String text = stream == null ? "" : read(stream);
+            connection.disconnect();
+
+            JSONObject json = text.isEmpty() ? new JSONObject() : new JSONObject(text);
+            String message = json.optString("message", "");
+            if (status < 400 && json.optBoolean("success", false)) {
+                JSONObject data = json.optJSONObject("data");
+                deliverSuccess(callback, data != null ? data : new JSONObject(), message);
+            } else {
+                deliverError(callback, status, errorText(json, message));
+            }
+        } catch (IOException e) {
+            deliverError(callback, status, "Can't reach KnightMarket. Check your connection and try again.");
+        } catch (JSONException e) {
+            deliverError(callback, status, "Unexpected response from the server.");
+        }
     }
 
     /** "Validation failed" alone isn't helpful, so show the first specific reason. */

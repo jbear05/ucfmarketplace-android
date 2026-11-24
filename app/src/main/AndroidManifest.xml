@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KnightMarket">
         <activity
+            android:name=".CreateListingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ListingDetailActivity"
             android:exported="false" />
         <activity
