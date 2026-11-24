@@ -58,6 +58,9 @@ public class MapActivity extends AppCompatActivity {
     private final List<Marker> markers = new ArrayList<>();
     private String category;
     private boolean restoredCamera;
+    // Bumped on every load and on destroy, so a slow response for an old category
+    // (or for a screen that was closed or rotated) is ignored instead of drawn
+    private int loadId;
 
     /** category may be null for all listings. */
     public static void open(Context context, String category) {
@@ -125,6 +128,7 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        loadId++; // drop any response still on its way
         binding.map.onDetach();
         super.onDestroy();
     }
@@ -145,9 +149,13 @@ public class MapActivity extends AppCompatActivity {
         showStatus("Loading listings…");
         binding.mapStatus.setOnClickListener(null);
 
+        final int thisLoad = ++loadId;
         Api.mapPins(category, Session.token(this), new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
+                if (isStale(thisLoad)) {
+                    return;
+                }
                 JSONArray pins = data.optJSONArray("pins");
                 int shown = showPins(pins != null ? pins : new JSONArray());
                 binding.pinCount.setText(String.valueOf(shown));
@@ -161,11 +169,19 @@ public class MapActivity extends AppCompatActivity {
 
             @Override
             public void onError(int status, String message) {
+                if (isStale(thisLoad)) {
+                    return;
+                }
                 binding.pinCount.setText("0");
                 showStatus(message + "\nTap to try again.");
                 binding.mapStatus.setOnClickListener(v -> loadPins());
             }
         });
+    }
+
+    /** True when the screen is gone or a newer load has started since this one. */
+    private boolean isStale(int load) {
+        return load != loadId || isFinishing() || isDestroyed();
     }
 
     /** Puts one pin per listing on the map and returns how many had a location. */
@@ -244,7 +260,11 @@ public class MapActivity extends AppCompatActivity {
             BoundingBox box = BoundingBox.fromGeoPointsSafe(points);
             int padding = dp(64);
             // zoomToBoundingBox needs the map's size, so wait for its first layout
+            final int thisLoad = loadId;
             binding.map.post(() -> {
+                if (isStale(thisLoad)) {
+                    return;
+                }
                 binding.map.zoomToBoundingBox(box, false, padding);
                 if (binding.map.getZoomLevelDouble() > 18.0) {
                     binding.map.getController().setZoom(18.0); // pins all on one block
