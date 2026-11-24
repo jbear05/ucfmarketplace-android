@@ -20,6 +20,9 @@
             android:name=".MapActivity"
             android:exported="false" />
         <activity
+            android:name=".CommunityRulesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ListingDetailActivity"
             android:exported="false" />
         <activity

@@ -2,10 +2,20 @@ package com.knightmarket.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.knightmarket.app.databinding.ActivityCreateAccountBinding;
 
@@ -15,7 +25,18 @@ import java.util.Locale;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
+    private static final String RULES_LINK_TEXT = "Community Rules";
+
     private ActivityCreateAccountBinding binding;
+
+    // "I Agree" on the Community Rules screen ticks the checkbox
+    private final ActivityResultLauncher<Intent> rulesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    binding.checkboxRules.setChecked(true);
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +47,39 @@ public class CreateAccountActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnContinue.setOnClickListener(v -> createAccount());
+
+        linkCommunityRules();
+    }
+
+    /**
+     * Turns "Community Rules" in the checkbox label into a link to the rules screen.
+     * Tapping the rest of the label still ticks the box as usual.
+     */
+    private void linkCommunityRules() {
+        String label = binding.checkboxRules.getText().toString();
+        int start = label.indexOf(RULES_LINK_TEXT);
+        if (start < 0) return;
+
+        SpannableString text = new SpannableString(label);
+        text.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                // Stop the tap from also toggling the checkbox
+                widget.cancelPendingInputEvents();
+                rulesLauncher.launch(CommunityRulesActivity.agreeIntent(CreateAccountActivity.this));
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint paint) {
+                super.updateDrawState(paint); // keeps the underline
+                // Dark text, since gold is hard to read on the cream background
+                paint.setColor(ContextCompat.getColor(CreateAccountActivity.this, R.color.text_main));
+                paint.setFakeBoldText(true);
+            }
+        }, start, start + RULES_LINK_TEXT.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        binding.checkboxRules.setText(text);
+        binding.checkboxRules.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void createAccount() {
@@ -48,7 +102,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
         if (!binding.checkboxRules.isChecked()) {
-            Toast.makeText(this, "Please agree to the Community Rules", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please read and agree to the Community Rules", Toast.LENGTH_SHORT).show();
+            rulesLauncher.launch(CommunityRulesActivity.agreeIntent(this));
             return;
         }
 
