@@ -146,6 +146,8 @@ public class MapActivity extends AppCompatActivity {
     private void loadPins() {
         binding.categoryName.setText(category != null ? category : "All listings");
         binding.preview.setVisibility(View.GONE);
+        clearPins(); // the old category's pins shouldn't stay tappable, or stay at all if this load fails
+        binding.pinCount.setText("0");
         showStatus("Loading listings…");
         binding.mapStatus.setOnClickListener(null);
 
@@ -186,8 +188,7 @@ public class MapActivity extends AppCompatActivity {
 
     /** Puts one pin per listing on the map and returns how many had a location. */
     private int showPins(JSONArray pins) {
-        binding.map.getOverlays().removeAll(markers);
-        markers.clear();
+        clearPins();
 
         // Many listings share a meetup spot (e.g. Student Union). Fan those out in a small
         // circle so every pin can still be tapped.
@@ -231,6 +232,12 @@ public class MapActivity extends AppCompatActivity {
         }
         restoredCamera = false; // only skip the fit once, right after a rotation
         return markers.size();
+    }
+
+    private void clearPins() {
+        binding.map.getOverlays().removeAll(markers);
+        markers.clear();
+        binding.map.invalidate();
     }
 
     /** The server stores GeoJSON { type: "Point", coordinates: [lng, lat] }. */
