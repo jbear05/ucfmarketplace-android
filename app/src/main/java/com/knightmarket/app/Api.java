@@ -89,6 +89,11 @@ public final class Api {
         request("GET", "/listings?limit=50" + filters.toQuery(), null, token, callback);
     }
 
+    /** One page of the public feed (active and pending, newest first); data.pagination has totalPages. */
+    public static void listingsPage(int page, int limit, String token, Callback callback) {
+        request("GET", "/listings?page=" + page + "&limit=" + limit, null, token, callback);
+    }
+
     /** One listing with its owner; data is the listing itself. */
     public static void listing(String id, String token, Callback callback) {
         request("GET", "/listings/" + encode(id), null, token, callback);

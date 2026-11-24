@@ -99,26 +99,46 @@ public class SellerProfileActivity extends AppCompatActivity {
         });
     }
 
+    // The server has no "listings by owner" filter, so walk the whole public feed page by page
+    private static final int FEED_PAGE_SIZE = 100;
+    private static final int FEED_MAX_PAGES = 50; // 5,000 listings; stops a runaway loop
+
     private void loadListingsFromFeed() {
-        Api.listings(new ListingFilters(), Session.token(this), new Api.Callback() {
+        loadFeedPage(1, new JSONArray());
+    }
+
+    private void loadFeedPage(int page, JSONArray found) {
+        Api.listingsPage(page, FEED_PAGE_SIZE, Session.token(this), new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
+                if (isFinishing() || isDestroyed()) return;
                 JSONArray all = data.optJSONArray("listings");
-                JSONArray mine = new JSONArray();
                 for (int i = 0; all != null && i < all.length(); i++) {
                     JSONObject listing = all.optJSONObject(i);
                     JSONObject owner = listing != null ? listing.optJSONObject("owner") : null;
                     if (owner != null && sellerId.equals(owner.optString("_id"))
                             && "active".equals(listing.optString("status"))) {
-                        mine.put(listing);
+                        found.put(listing);
                     }
                 }
-                showListings(mine);
+                JSONObject pagination = data.optJSONObject("pagination");
+                int totalPages = pagination != null ? pagination.optInt("totalPages", page) : page;
+                boolean lastPage = all == null || all.length() < FEED_PAGE_SIZE || page >= totalPages;
+                if (lastPage || page >= FEED_MAX_PAGES) {
+                    showListings(found);
+                } else {
+                    loadFeedPage(page + 1, found);
+                }
             }
 
             @Override
             public void onError(int status, String message) {
-                binding.listingsEmpty.setText(message);
+                if (isFinishing() || isDestroyed()) return;
+                if (found.length() > 0) {
+                    showListings(found); // show what we have rather than nothing
+                } else {
+                    binding.listingsEmpty.setText(message);
+                }
             }
         });
     }
