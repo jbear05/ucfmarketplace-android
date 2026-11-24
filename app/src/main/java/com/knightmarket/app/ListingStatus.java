@@ -55,7 +55,8 @@ public final class ListingStatus {
                     if (status.equals(current)) {
                         return;
                     }
-                    Api.setListingStatus(listingId, status, Session.token(activity), new Api.Callback() {
+                    String token = Session.token(activity);
+                    Api.setListingStatus(listingId, status, token, new Api.Callback() {
                         @Override
                         public void onSuccess(JSONObject data, String message) {
                             onChanged.onChanged(data.optString("status", status));
@@ -63,6 +64,10 @@ public final class ListingStatus {
 
                         @Override
                         public void onError(int code, String message) {
+                            if (code == 401) {
+                                Session.expired(activity, token);
+                                return;
+                            }
                             Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
                         }
                     });
