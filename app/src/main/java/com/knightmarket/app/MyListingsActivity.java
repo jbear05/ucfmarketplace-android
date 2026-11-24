@@ -74,7 +74,8 @@ public class MyListingsActivity extends AppCompatActivity {
     }
 
     private void load() {
-        Api.myListings(Session.token(this), new Api.Callback() {
+        String token = Session.token(this);
+        Api.myListings(token, new Api.Callback() {
             @Override
             public void onSuccess(JSONObject data, String message) {
                 JSONArray listings = data.optJSONArray("listings");
@@ -85,7 +86,7 @@ public class MyListingsActivity extends AppCompatActivity {
             @Override
             public void onError(int status, String message) {
                 if (status == 401) {
-                    Session.expired(MyListingsActivity.this);
+                    Session.expired(MyListingsActivity.this, token);
                     return;
                 }
                 binding.myList.setVisibility(View.GONE);
@@ -103,12 +104,13 @@ public class MyListingsActivity extends AppCompatActivity {
     }
 
     private void confirmDelete(JSONObject listing, int position) {
+        String token = Session.token(this);
         new AlertDialog.Builder(this)
                 .setTitle("Delete Listing?")
                 .setMessage("\"" + listing.optString("title") + "\" will be removed for good. This can't be undone.")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Delete", (dialog, which) ->
-                        Api.deleteListing(listing.optString("_id"), Session.token(this), new Api.Callback() {
+                        Api.deleteListing(listing.optString("_id"), token, new Api.Callback() {
                             @Override
                             public void onSuccess(JSONObject data, String message) {
                                 adapter.remove(position);
@@ -119,7 +121,7 @@ public class MyListingsActivity extends AppCompatActivity {
                             @Override
                             public void onError(int status, String message) {
                                 if (status == 401) {
-                                    Session.expired(MyListingsActivity.this);
+                                    Session.expired(MyListingsActivity.this, token);
                                     return;
                                 }
                                 Toast.makeText(MyListingsActivity.this, message, Toast.LENGTH_LONG).show();
