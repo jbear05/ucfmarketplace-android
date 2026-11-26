@@ -77,8 +77,8 @@ public class ListingUpload extends AndroidViewModel {
         }
     }
 
-    /** Resizes the photos, then POSTs the listing. Ignored if an upload is already running. */
-    public void start(Map<String, String> fields, List<Uri> photos, String token) {
+    /** Resizes the photos, then POSTs or PUTs the listing. Ignored if an upload is already running. */
+    public void start(String listingId, Map<String, String> fields, List<Uri> photos, String token) {
         if (running) {
             return;
         }
@@ -96,17 +96,24 @@ public class ListingUpload extends AndroidViewModel {
                 main.post(() -> done(null, 0, "Couldn't read one of the photos. Remove it and try again."));
                 return;
             }
-            main.post(() -> Api.createListing(fields, files, token, new Api.Callback() {
-                @Override
-                public void onSuccess(JSONObject data, String message) {
-                    done(data.optJSONObject("listing"), 200, message);
-                }
+            main.post(() -> {
+                Api.Callback callback = new Api.Callback() {
+                    @Override
+                    public void onSuccess(JSONObject data, String message) {
+                        done(data.optJSONObject("listing"), 200, message);
+                    }
 
-                @Override
-                public void onError(int status, String message) {
-                    done(null, status, message);
+                    @Override
+                    public void onError(int status, String message) {
+                        done(null, status, message);
+                    }
+                };
+                if (listingId != null) {
+                    Api.editListing(listingId, fields, files, token, callback);
+                } else {
+                    Api.createListing(fields, files, token, callback);
                 }
-            }));
+            });
         });
     }
 

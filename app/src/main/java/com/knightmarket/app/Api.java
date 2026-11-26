@@ -140,6 +140,17 @@ public final class Api {
         multipart("POST", "/listings", fields, photos, token, callback);
     }
 
+    public static void editListing(String id, Map<String, String> fields, List<byte[]> photos, String token,
+                                   Callback callback) {
+        multipart("PUT", "/listings/" + encode(id), fields, photos, token, callback);
+    }
+
+    public static void deleteListingImage(String id, String imageUrl, String token, Callback callback) {
+        JSONObject body = new JSONObject();
+        put(body, "imageUrl", imageUrl);
+        request("DELETE", "/listings/" + encode(id) + "/image", body, token, callback);
+    }
+
     // ── Profile ──────────────────────────────────────────────────────────────
 
     public static void updateName(String name, String token, Callback callback) {

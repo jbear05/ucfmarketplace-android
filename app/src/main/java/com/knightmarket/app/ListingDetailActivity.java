@@ -111,6 +111,11 @@ public class ListingDetailActivity extends AppCompatActivity {
         if (listing.optBoolean("isOwnListing")) {
             // Your own listing: manage it instead of messaging yourself (as in the Flutter app)
             binding.favorite.setVisibility(View.GONE);
+            binding.edit.setVisibility(View.VISIBLE);
+            binding.edit.setOnClickListener(v -> {
+                startActivity(CreateListingActivity.intentForEdit(this, listingId));
+                finish(); // Close detail page so it reloads on return
+            });
             binding.contact.setText("Change Status");
             binding.contact.setOnClickListener(v -> ListingStatus.choose(this, listingId,
                     listing.optString("status"), newStatus -> {

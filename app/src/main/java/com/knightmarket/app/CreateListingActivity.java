@@ -1,5 +1,6 @@
 package com.knightmarket.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.knightmarket.app.databinding.ActivityCreateListingBinding;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,6 +51,7 @@ import java.util.concurrent.Executors;
  */
 public class CreateListingActivity extends AppCompatActivity implements ListingUpload.Listener {
 
+    private static final String EXTRA_LISTING_ID = "listing_id";
     private static final int MAX_PHOTOS = 8;
     private static final BigDecimal MAX_PRICE = new BigDecimal("100000");
     private static final String STATE_PHOTOS = "photos";
@@ -58,13 +61,21 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final Handler main = new Handler(Looper.getMainLooper());
 
+    private String editingListingId;
     private ActivityCreateListingBinding binding;
     private ArrayList<Uri> photos = new ArrayList<>();
+    private final ArrayList<String> existingPhotos = new ArrayList<>();
     private final Map<Uri, Bitmap> thumbnails = new HashMap<>();
     private ListingUpload upload;
 
     private ActivityResultLauncher<PickVisualMediaRequest> pickOne;
     private final List<ActivityResultLauncher<PickVisualMediaRequest>> pickMany = new ArrayList<>();
+
+    public static Intent intentForEdit(Context context, String listingId) {
+        Intent intent = new Intent(context, CreateListingActivity.class);
+        intent.putExtra(EXTRA_LISTING_ID, listingId);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +96,15 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
         upload = new ViewModelProvider(this).get(ListingUpload.class);
         setPublishing(upload.isRunning());
         upload.attach(this); // delivers a result that arrived while the screen was rotating
+
+        editingListingId = getIntent().getStringExtra(EXTRA_LISTING_ID);
+        if (editingListingId != null) {
+            binding.screenTitle.setText("Edit Listing");
+            binding.publish.setText("Save Changes");
+            if (savedInstanceState == null) {
+                loadListing();
+            }
+        }
 
         binding.back.setOnClickListener(v -> leave());
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -140,7 +160,7 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
     }
 
     private void pickPhotos() {
-        int left = MAX_PHOTOS - photos.size();
+        int left = MAX_PHOTOS - (existingPhotos.size() + photos.size());
         if (left <= 0) {
             Toast.makeText(this, "You can add up to " + MAX_PHOTOS + " photos", Toast.LENGTH_SHORT).show();
             return;
@@ -157,7 +177,7 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
 
     private void addPhotos(List<Uri> picked) {
         for (Uri uri : picked) {
-            if (photos.size() >= MAX_PHOTOS) {
+            if (existingPhotos.size() + photos.size() >= MAX_PHOTOS) {
                 break;
             }
             if (!photos.contains(uri)) {
@@ -171,11 +191,85 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
     private void showPhotos() {
         LinearLayout row = binding.photoRow;
         row.removeViews(1, row.getChildCount() - 1); // keep the Add tile
-        for (int i = 0; i < photos.size(); i++) {
-            row.addView(photoTile(photos.get(i), i));
+        int total = existingPhotos.size() + photos.size();
+        
+        int index = 0;
+        for (String url : existingPhotos) {
+            row.addView(existingPhotoTile(url, index++));
         }
-        binding.photoCount.setText(photos.size() + "/" + MAX_PHOTOS);
-        binding.addPhoto.setVisibility(photos.size() >= MAX_PHOTOS ? View.GONE : View.VISIBLE);
+        for (Uri uri : photos) {
+            row.addView(photoTile(uri, index++));
+        }
+        
+        binding.photoCount.setText(total + "/" + MAX_PHOTOS);
+        binding.addPhoto.setVisibility(total >= MAX_PHOTOS ? View.GONE : View.VISIBLE);
+    }
+
+    private View existingPhotoTile(String url, int index) {
+        int size = dp(80);
+        FrameLayout tile = new FrameLayout(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+        params.setMarginStart(dp(8));
+        tile.setLayoutParams(params);
+        tile.setBackgroundResource(R.drawable.km_card);
+        tile.setClipToOutline(true);
+
+        ImageView image = new ImageView(this);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.setContentDescription(index == 0 ? "Cover photo" : "Photo " + (index + 1) + ", tap to make it the cover");
+        tile.addView(image, new FrameLayout.LayoutParams(size, size));
+        ImageLoader.load(url, image);
+
+        if (index == 0) {
+            TextView cover = new TextView(this);
+            cover.setText("Cover");
+            cover.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            cover.setTextColor(ContextCompat.getColor(this, R.color.km_black));
+            cover.setBackgroundColor(ContextCompat.getColor(this, R.color.km_gold));
+            cover.setGravity(Gravity.CENTER);
+            tile.addView(cover, new FrameLayout.LayoutParams(size, FrameLayout.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM));
+        }
+
+        ImageView remove = new ImageView(this);
+        remove.setImageResource(R.drawable.ic_close);
+        remove.setColorFilter(ContextCompat.getColor(this, R.color.km_text));
+        remove.setBackgroundResource(R.drawable.km_circle);
+        remove.setPadding(dp(4), dp(4), dp(4), dp(4));
+        remove.setContentDescription("Remove photo");
+        FrameLayout.LayoutParams removeParams = new FrameLayout.LayoutParams(dp(24), dp(24), Gravity.TOP | Gravity.END);
+        removeParams.setMargins(dp(4), dp(4), dp(4), dp(4));
+        tile.addView(remove, removeParams);
+
+        remove.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                .setTitle("Delete photo?")
+                .setMessage("This will remove the photo immediately.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    Api.deleteListingImage(editingListingId, url, Session.token(this), new Api.Callback() {
+                        @Override
+                        public void onSuccess(JSONObject data, String message) {
+                            existingPhotos.remove(url);
+                            showPhotos();
+                        }
+                        @Override
+                        public void onError(int status, String message) {
+                            Toast.makeText(CreateListingActivity.this, "Couldn't delete photo: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .show();
+        });
+        tile.setOnClickListener(v -> {
+            if (existingPhotos.indexOf(url) > 0) {
+                existingPhotos.remove(url);
+                existingPhotos.add(0, url);
+                showPhotos();
+                Toast.makeText(this, "Cover photo set", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return tile;
     }
 
     private View photoTile(Uri uri, int index) {
@@ -257,6 +351,61 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
 
     // ── Publish ──────────────────────────────────────────────────────────────
 
+    private void loadListing() {
+        Api.listing(editingListingId, Session.token(this), new Api.Callback() {
+            @Override
+            public void onSuccess(JSONObject data, String message) {
+                if (isDestroyed() || isFinishing()) return;
+                
+                binding.listingTitle.setText(data.optString("title"));
+                binding.price.setText(data.optString("price"));
+                binding.description.setText(data.optString("description"));
+                
+                String cat = data.optString("category");
+                for (int i = 0; i < binding.categoryGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.categoryGroup.getChildAt(i);
+                    if (chip.getText().toString().equals(cat)) {
+                        binding.categoryGroup.check(chip.getId());
+                        break;
+                    }
+                }
+
+                String cond = data.optString("condition");
+                for (int i = 0; i < binding.conditionGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.conditionGroup.getChildAt(i);
+                    if (chip.getText().toString().equals(cond)) {
+                        binding.conditionGroup.check(chip.getId());
+                        break;
+                    }
+                }
+
+                String campus = data.optString("meetupArea");
+                for (int i = 0; i < binding.campusGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.campusGroup.getChildAt(i);
+                    if (campusValue(chip.getText().toString()).equals(campus)) {
+                        binding.campusGroup.check(chip.getId());
+                        break;
+                    }
+                }
+
+                JSONArray images = data.optJSONArray("images");
+                if (images != null) {
+                    for (int i = 0; i < images.length(); i++) {
+                        existingPhotos.add(images.optString(i));
+                    }
+                    showPhotos();
+                }
+            }
+
+            @Override
+            public void onError(int status, String message) {
+                if (isDestroyed() || isFinishing()) return;
+                Toast.makeText(CreateListingActivity.this, "Couldn't load listing", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
+
     private void publish() {
         if (upload.isRunning()) {
             return;
@@ -302,7 +451,7 @@ public class CreateListingActivity extends AppCompatActivity implements ListingU
         fields.put("isAiGenerated", binding.aiGenerated.isChecked() ? "true" : "false");
 
         setPublishing(true);
-        upload.start(fields, photos, Session.token(this));
+        upload.start(editingListingId, fields, photos, Session.token(this));
     }
 
     /** Called by ListingUpload on the main thread, on whichever screen is showing now. */
